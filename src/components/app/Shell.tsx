@@ -12,9 +12,10 @@ import {
 } from "lucide-react";
 import { type ReactNode, useEffect } from "react";
 import { actions } from "@/lib/demo/store";
+import meeshoMark from "@/assets/meesho-mark-from-upload.png.asset.json";
 import { useApp } from "@/lib/useApp";
 import { cn } from "@/lib/utils";
-import { Pill } from "./ui";
+import { Button, Pill } from "./ui";
 
 type NavItem = { to: string; icon: LucideIcon; label: string };
 
@@ -58,25 +59,68 @@ export function AppHeader({
   back,
   subtitle,
   right,
+  home = false,
 }: {
   title: string;
   back?: boolean;
   subtitle?: string;
   right?: ReactNode;
+  home?: boolean;
 }) {
   const router = useRouter();
   const { s, t } = useApp();
+  const controls = (
+    <div className="flex shrink-0 items-center gap-0.5">
+      {right}
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={() => actions.setLang(s.lang === "en" ? "hi" : "en")}
+        aria-label={s.lang === "en" ? "हिन्दी में देखें" : "View in English"}
+        className="min-w-9 px-1 text-xs text-foreground"
+      >
+        {s.lang === "en" ? "हि" : "EN"}
+      </Button>
+      <Link
+        to="/demo"
+        aria-label={t("demoControls")}
+        className="tap flex items-center gap-1 rounded-lg px-1.5 text-xs font-semibold text-primary hover:bg-primary-soft"
+      >
+        <Wand2 className="h-4 w-4" aria-hidden />
+        <span>Demo</span>
+      </Link>
+    </div>
+  );
+  if (home) {
+    return (
+      <header className="sticky top-0 z-30 border-b border-border bg-card px-3 py-2.5">
+        <div className="flex min-w-0 items-center justify-between gap-2">
+          <div className="flex min-w-0 items-center gap-2">
+            <img src={meeshoMark.url} alt="Meesho" className="h-[27px] w-auto shrink-0" />
+            <h1 className="truncate text-[17px] font-bold text-foreground">Sourcing</h1>
+          </div>
+          {controls}
+        </div>
+        <div className="mt-1.5 flex min-w-0 items-center justify-between gap-2">
+          <p className="min-w-0 truncate text-[11px] text-muted-foreground" title={subtitle}>{subtitle}</p>
+          <Pill tone="brand" className="shrink-0 px-1.5 py-0.5 text-[10px]">{t("conceptDemo")}</Pill>
+        </div>
+      </header>
+    );
+  }
   return (
     <header className="sticky top-0 z-30 border-b border-border bg-card">
       <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 px-3 py-2.5">
         {back ? (
-          <button
+          <Button
+            variant="ghost"
+            size="sm"
             onClick={() => router.history.back()}
             aria-label={t("back")}
-            className="tap -ml-1 grid shrink-0 place-items-center rounded-lg text-foreground hover:bg-secondary"
+            className="-ml-1 grid shrink-0 place-items-center px-0 text-foreground hover:bg-secondary"
           >
             <ArrowLeft className="h-5 w-5" aria-hidden />
-          </button>
+          </Button>
         ) : (
           <span aria-hidden className="h-6 w-1 shrink-0 rounded-full bg-primary" />
         )}
@@ -84,24 +128,7 @@ export function AppHeader({
           <h1 className="truncate text-[15px] font-bold text-foreground">{title}</h1>
           {subtitle ? <p className="truncate text-[11px] text-muted-foreground">{subtitle}</p> : null}
         </div>
-        <div className="flex shrink-0 items-center gap-0.5">
-          {right}
-          <button
-            onClick={() => actions.setLang(s.lang === "en" ? "hi" : "en")}
-            aria-label={s.lang === "en" ? "हिन्दी में देखें" : "View in English"}
-            className="tap grid place-items-center rounded-lg px-1.5 text-xs font-semibold text-foreground hover:bg-secondary"
-          >
-            {s.lang === "en" ? "हि" : "EN"}
-          </button>
-          <Link
-            to="/demo"
-            aria-label={t("demoControls")}
-            className="tap flex items-center gap-1 rounded-lg px-1.5 text-xs font-semibold text-primary hover:bg-primary-soft"
-          >
-            <Wand2 className="h-4 w-4" aria-hidden />
-            <span>Demo</span>
-          </Link>
-        </div>
+        {controls}
       </div>
     </header>
   );
@@ -141,6 +168,7 @@ export function Screen({
   children,
   nav = true,
   sticky,
+  home = false,
 }: {
   title: string;
   subtitle?: string;
@@ -149,10 +177,11 @@ export function Screen({
   children: ReactNode;
   nav?: boolean;
   sticky?: ReactNode;
+  home?: boolean;
 }) {
   return (
     <div className="flex min-h-dvh flex-col">
-      <AppHeader title={title} subtitle={subtitle} back={back} right={right} />
+      <AppHeader title={title} subtitle={subtitle} back={back} right={right} home={home} />
       <main className={cn("flex-1", nav ? "pb-24" : "pb-6", sticky && "pb-40")}>{children}</main>
       {sticky ? (
         <div
