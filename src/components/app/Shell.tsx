@@ -1,4 +1,4 @@
-import { Link, useRouter } from "@tanstack/react-router";
+import { Link, useRouter, useRouterState } from "@tanstack/react-router";
 import {
   ArrowLeft,
   ClipboardList,
@@ -11,16 +11,32 @@ import {
   User,
   Wand2,
 } from "lucide-react";
-import type { ReactNode } from "react";
+import { type ReactNode, useEffect } from "react";
+import { actions } from "@/lib/demo/store";
 import { useApp } from "@/lib/useApp";
 import { cn } from "@/lib/utils";
 import { Pill } from "./ui";
 
 type NavItem = { to: string; icon: LucideIcon; label: string };
 
+const SHARED_PATHS = ["/demo", "/about"];
+
+/** The route decides the role; shared utility pages fall back to the stored role. */
+export function useRouteRole(): "seller" | "supplier" {
+  const { s } = useApp();
+  const path = useRouterState({ select: (st) => st.location.pathname });
+  if (path.startsWith("/supplier")) return "supplier";
+  if (SHARED_PATHS.some((p) => path.startsWith(p))) return s.role;
+  return "seller";
+}
+
 function useNav(): NavItem[] {
   const { s, t } = useApp();
-  if (s.role === "supplier") {
+  const role = useRouteRole();
+  useEffect(() => {
+    if (role !== s.role) actions.setRole(role);
+  }, [role, s.role]);
+  if (role === "supplier") {
     return [
       { to: "/supplier", icon: Home, label: t("nav_home") },
       { to: "/supplier/demand", icon: Inbox, label: t("nav_demand") },
