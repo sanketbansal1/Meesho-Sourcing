@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ChevronRight, Compass, Sparkles } from "lucide-react";
 import { Screen } from "@/components/app/Shell";
-import { MaterialTile, Pill } from "@/components/app/ui";
+import { MaterialTile } from "@/components/app/ui";
 import { CATEGORIES, SELLER, getProduct } from "@/lib/demo/catalog";
 import { perUnit, rupees } from "@/lib/demo/money";
 import { MARKETPLACE } from "@/lib/demo/seed";
