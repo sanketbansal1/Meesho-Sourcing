@@ -68,12 +68,14 @@ function HomeScreen() {
     <Screen
       title="Meesho Sourcing"
       subtitle={`${SELLER.business} · ${SELLER.city}`}
-      right={<Pill tone="brand" className="px-1.5 text-[10px]">{t("conceptDemo")}</Pill>}
     >
       <div className="min-h-full space-y-5 bg-surface px-4 pb-4 pt-4">
         {/* B. Greeting + summary */}
         <section className="space-y-2">
-          <h2 className="text-xl font-bold text-foreground">{t("greeting")}</h2>
+          <div className="flex items-center justify-between gap-2">
+            <h2 className="text-xl font-bold text-foreground">{t("greeting")}</h2>
+            <Pill tone="brand">{t("conceptDemo")}</Pill>
+          </div>
           <div className="grid grid-cols-3 divide-x divide-border rounded-xl bg-card py-3">
             {metrics.map((m) => {
               const inner = (
