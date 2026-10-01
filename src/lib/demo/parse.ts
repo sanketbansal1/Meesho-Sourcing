@@ -99,10 +99,13 @@ export function parseRequirement(input: string): ParsedRequirement {
       out.material = m.label;
       out.categoryId = m.categoryId;
       out.matchedProductId = m.productId;
-      out.composition = m.composition;
       break;
     }
   }
+  // Composition is only recorded when the buyer states it explicitly — "cotton" alone is a material family.
+  const pct = text.match(/(\d{2,3})\s*%\s*(cotton|polyester|viscose|कॉटन)/);
+  if (pct) out.composition = `${pct[1]}% ${pct[2] === "कॉटन" ? "cotton" : pct[2]}`;
+  else if (/\bblend\b|ब्लेंड/.test(text)) out.composition = "Blend (ratio to confirm)";
 
   for (const c of COLOURS) {
     if (c.keys.some((k) => text.includes(k))) {
