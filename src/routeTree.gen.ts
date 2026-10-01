@@ -14,6 +14,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AccountRouteImport } from './routes/account'
 import { Route as DemoRouteImport } from './routes/demo'
 import { Route as PaymentsRouteImport } from './routes/payments'
+import { Route as QuotesRouteImport } from './routes/quotes'
 import { Route as CheckoutProductIdRouteImport } from './routes/checkout.$productId'
 import { Route as OrdersIndexRouteImport } from './routes/orders.index'
 import { Route as OrdersOrderIdRouteImport } from './routes/orders.$orderId'
@@ -52,6 +53,11 @@ const DemoRoute = DemoRouteImport.update({
 const PaymentsRoute = PaymentsRouteImport.update({
   id: '/payments',
   path: '/payments',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const QuotesRoute = QuotesRouteImport.update({
+  id: '/quotes',
+  path: '/quotes',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CheckoutProductIdRoute = CheckoutProductIdRouteImport.update({
@@ -134,6 +140,7 @@ export interface FileRoutesByFullPath {
   '/account': typeof AccountRoute
   '/demo': typeof DemoRoute
   '/payments': typeof PaymentsRoute
+  '/quotes': typeof QuotesRoute
   '/checkout/$productId': typeof CheckoutProductIdRoute
   '/orders/$orderId': typeof OrdersOrderIdRoute
   '/sourcing/requirement': typeof SourcingRequirementRoute
@@ -155,6 +162,7 @@ export interface FileRoutesByTo {
   '/account': typeof AccountRoute
   '/demo': typeof DemoRoute
   '/payments': typeof PaymentsRoute
+  '/quotes': typeof QuotesRoute
   '/checkout/$productId': typeof CheckoutProductIdRoute
   '/orders/$orderId': typeof OrdersOrderIdRoute
   '/sourcing/requirement': typeof SourcingRequirementRoute
@@ -177,6 +185,7 @@ export interface FileRoutesById {
   '/account': typeof AccountRoute
   '/demo': typeof DemoRoute
   '/payments': typeof PaymentsRoute
+  '/quotes': typeof QuotesRoute
   '/checkout/$productId': typeof CheckoutProductIdRoute
   '/orders/$orderId': typeof OrdersOrderIdRoute
   '/sourcing/requirement': typeof SourcingRequirementRoute
@@ -200,6 +209,7 @@ export interface FileRouteTypes {
     | '/account'
     | '/demo'
     | '/payments'
+    | '/quotes'
     | '/checkout/$productId'
     | '/orders/$orderId'
     | '/sourcing/requirement'
@@ -221,6 +231,7 @@ export interface FileRouteTypes {
     | '/account'
     | '/demo'
     | '/payments'
+    | '/quotes'
     | '/checkout/$productId'
     | '/orders/$orderId'
     | '/sourcing/requirement'
@@ -242,6 +253,7 @@ export interface FileRouteTypes {
     | '/account'
     | '/demo'
     | '/payments'
+    | '/quotes'
     | '/checkout/$productId'
     | '/orders/$orderId'
     | '/sourcing/requirement'
@@ -264,6 +276,7 @@ export interface RootRouteChildren {
   AccountRoute: typeof AccountRoute
   DemoRoute: typeof DemoRoute
   PaymentsRoute: typeof PaymentsRoute
+  QuotesRoute: typeof QuotesRoute
   CheckoutProductIdRoute: typeof CheckoutProductIdRoute
   OrdersOrderIdRoute: typeof OrdersOrderIdRoute
   SourcingRequirementRoute: typeof SourcingRequirementRoute
@@ -315,6 +328,13 @@ declare module '@tanstack/react-router' {
       path: '/payments'
       fullPath: '/payments'
       preLoaderRoute: typeof PaymentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/quotes': {
+      id: '/quotes'
+      path: '/quotes'
+      fullPath: '/quotes'
+      preLoaderRoute: typeof QuotesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/checkout/$productId': {
@@ -424,6 +444,7 @@ const rootRouteChildren: RootRouteChildren = {
   AccountRoute: AccountRoute,
   DemoRoute: DemoRoute,
   PaymentsRoute: PaymentsRoute,
+  QuotesRoute: QuotesRoute,
   CheckoutProductIdRoute: CheckoutProductIdRoute,
   OrdersOrderIdRoute: OrdersOrderIdRoute,
   SourcingRequirementRoute: SourcingRequirementRoute,
