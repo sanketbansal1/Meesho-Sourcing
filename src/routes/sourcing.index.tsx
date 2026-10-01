@@ -126,6 +126,15 @@ function SourcingScreen() {
           </span>
         </button>
 
+        {s.quotes.length > 0 ? (
+          <Link to="/quotes">
+            <Card className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
+              <span className="min-w-0 truncate text-sm font-semibold text-foreground">{t("quotesReceived")}</span>
+              <span className="num text-xs font-bold text-primary">{s.quotes.length}</span>
+            </Card>
+          </Link>
+        ) : null}
+
         <Link to="/payments">
           <Card className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
             <div className="min-w-0">
