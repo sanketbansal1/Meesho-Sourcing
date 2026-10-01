@@ -67,6 +67,7 @@ export function AppHeader({
 }) {
   const router = useRouter();
   const { s, t } = useApp();
+  const role = useRouteRole();
   return (
     <header className="sticky top-0 z-30 border-b border-border bg-card">
       <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 px-3 py-2.5">
@@ -83,19 +84,26 @@ export function AppHeader({
             aria-hidden
             className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-primary text-primary-foreground"
           >
-            {s.role === "supplier" ? <Store className="h-4 w-4" /> : <Layers className="h-4 w-4" />}
+            {role === "supplier" ? <Store className="h-4 w-4" /> : <Layers className="h-4 w-4" />}
           </span>
         )}
         <div className="min-w-0">
           <h1 className="truncate text-base font-bold text-foreground">{title}</h1>
           {subtitle ? <p className="truncate text-[11px] text-muted-foreground">{subtitle}</p> : null}
         </div>
-        <div className="flex shrink-0 items-center gap-1">
+        <div className="flex shrink-0 items-center gap-0.5">
           {right}
+          <button
+            onClick={() => actions.setLang(s.lang === "en" ? "hi" : "en")}
+            aria-label={s.lang === "en" ? "हिन्दी में देखें" : "View in English"}
+            className="tap grid place-items-center rounded-lg px-1.5 text-xs font-semibold text-foreground hover:bg-secondary"
+          >
+            {s.lang === "en" ? "हि" : "EN"}
+          </button>
           <Link
             to="/demo"
             aria-label={t("demoControls")}
-            className="tap flex items-center gap-1 rounded-lg px-2 text-xs font-semibold text-primary hover:bg-primary-soft"
+            className="tap flex items-center gap-1 rounded-lg px-1.5 text-xs font-semibold text-primary hover:bg-primary-soft"
           >
             <Wand2 className="h-4 w-4" aria-hidden />
             <span>Demo</span>
