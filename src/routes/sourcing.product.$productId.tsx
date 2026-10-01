@@ -36,18 +36,26 @@ export const Route = createFileRoute("/sourcing/product/$productId")({
       },
     ],
   }),
+  validateSearch: (search: Record<string, unknown>): { route?: "batch" | "buynow" } =>
+    search.route === "batch" || search.route === "buynow" ? { route: search.route } : {},
   component: ProductScreen,
 });
 
 function ProductScreen() {
   const { productId } = Route.useParams();
+  const { route: wanted } = Route.useSearch();
   const { s, t, lang } = useApp();
   const navigate = useNavigate();
   const product = getProduct(productId);
   const batch = s.batches.find((b) => b.id === product?.batchId);
   const batchOpen = batch?.status === "open";
-  const [route, setRoute] = useState<"batch" | "buynow">(batchOpen ? "batch" : "buynow");
-  const [qty, setQty] = useState(() => (batchOpen ? 100 : (product?.buyNow?.minQty ?? 100)));
+  const initialRoute: "batch" | "buynow" =
+    wanted === "buynow" && product?.buyNow ? "buynow" : batchOpen ? "batch" : "buynow";
+  const [route, setRoute] = useState<"batch" | "buynow">(initialRoute);
+  const [qty, setQty] = useState(() =>
+    initialRoute === "batch" ? 100 : (product?.buyNow?.minQty ?? 100),
+  );
+  const [localQuote, setLocalQuote] = useState(() => String((product?.localQuotePaise ?? 0) / 100));
   const [badgeOpen, setBadgeOpen] = useState(false);
 
   if (!product) {
