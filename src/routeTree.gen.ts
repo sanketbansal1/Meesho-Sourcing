@@ -10,33 +10,54 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SourcingIndexRouteImport } from './routes/sourcing.index'
+import { Route as SourcingCategoryCategoryIdRouteImport } from './routes/sourcing.category.$categoryId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SourcingIndexRoute = SourcingIndexRouteImport.update({
+  id: '/sourcing/',
+  path: '/sourcing/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SourcingCategoryCategoryIdRoute =
+  SourcingCategoryCategoryIdRouteImport.update({
+    id: '/sourcing/category/$categoryId',
+    path: '/sourcing/category/$categoryId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/sourcing/': typeof SourcingIndexRoute
+  '/sourcing/category/$categoryId': typeof SourcingCategoryCategoryIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/sourcing': typeof SourcingIndexRoute
+  '/sourcing/category/$categoryId': typeof SourcingCategoryCategoryIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/sourcing/': typeof SourcingIndexRoute
+  '/sourcing/category/$categoryId': typeof SourcingCategoryCategoryIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/sourcing/' | '/sourcing/category/$categoryId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/sourcing' | '/sourcing/category/$categoryId'
+  id: '__root__' | '/' | '/sourcing/' | '/sourcing/category/$categoryId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  SourcingIndexRoute: typeof SourcingIndexRoute
+  SourcingCategoryCategoryIdRoute: typeof SourcingCategoryCategoryIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +69,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sourcing/': {
+      id: '/sourcing/'
+      path: '/sourcing'
+      fullPath: '/sourcing/'
+      preLoaderRoute: typeof SourcingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sourcing/category/$categoryId': {
+      id: '/sourcing/category/$categoryId'
+      path: '/sourcing/category/$categoryId'
+      fullPath: '/sourcing/category/$categoryId'
+      preLoaderRoute: typeof SourcingCategoryCategoryIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  SourcingIndexRoute: SourcingIndexRoute,
+  SourcingCategoryCategoryIdRoute: SourcingCategoryCategoryIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
