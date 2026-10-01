@@ -1,0 +1,2 @@
+- [ ] Update seller and supplier home top bars with the supplied Meesho mark, Sourcing, account details, demo badge and controls.
+- [ ] Check 360px layout and detail-page header preservation.
