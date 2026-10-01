@@ -76,9 +76,13 @@ export function AppHeader({
         </div>
         <div className="flex shrink-0 items-center gap-1">
           {right}
-          <Link to="/demo" className="tap grid place-items-center rounded-lg px-2 text-primary hover:bg-primary-soft">
-            <span className="sr-only">{t("demoControls")}</span>
-            <Wand2 className="h-5 w-5" aria-hidden />
+          <Link
+            to="/demo"
+            aria-label={t("demoControls")}
+            className="tap flex items-center gap-1 rounded-lg px-2 text-xs font-semibold text-primary hover:bg-primary-soft"
+          >
+            <Wand2 className="h-4 w-4" aria-hidden />
+            <span>Demo</span>
           </Link>
         </div>
       </div>
