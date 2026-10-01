@@ -227,7 +227,7 @@ function RequirementScreen() {
                   <div className="mt-2">
                     <Note tone="warning">
                       {t("missingInfo")}:{" "}
-                      {missing.map((m) => (lang === "hi" ? FIELD_LABELS[m][1] : FIELD_LABELS[m][0])).join(", ")}
+                      {missing.map((m) => (lang === "hi" ? FIELD_LABELS[m]![1] : FIELD_LABELS[m]![0])).join(", ")}
                     </Note>
                   </div>
                 ) : null}
