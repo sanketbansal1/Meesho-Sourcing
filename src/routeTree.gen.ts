@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SourcingIndexRouteImport } from './routes/sourcing.index'
 import { Route as SourcingCategoryCategoryIdRouteImport } from './routes/sourcing.category.$categoryId'
+import { Route as SourcingProductProductIdRouteImport } from './routes/sourcing.product.$productId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -29,35 +30,58 @@ const SourcingCategoryCategoryIdRoute =
     path: '/sourcing/category/$categoryId',
     getParentRoute: () => rootRouteImport,
   } as any)
+const SourcingProductProductIdRoute =
+  SourcingProductProductIdRouteImport.update({
+    id: '/sourcing/product/$productId',
+    path: '/sourcing/product/$productId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/sourcing/': typeof SourcingIndexRoute
   '/sourcing/category/$categoryId': typeof SourcingCategoryCategoryIdRoute
+  '/sourcing/product/$productId': typeof SourcingProductProductIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/sourcing': typeof SourcingIndexRoute
   '/sourcing/category/$categoryId': typeof SourcingCategoryCategoryIdRoute
+  '/sourcing/product/$productId': typeof SourcingProductProductIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/sourcing/': typeof SourcingIndexRoute
   '/sourcing/category/$categoryId': typeof SourcingCategoryCategoryIdRoute
+  '/sourcing/product/$productId': typeof SourcingProductProductIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/sourcing/' | '/sourcing/category/$categoryId'
+  fullPaths:
+    | '/'
+    | '/sourcing/'
+    | '/sourcing/category/$categoryId'
+    | '/sourcing/product/$productId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/sourcing' | '/sourcing/category/$categoryId'
-  id: '__root__' | '/' | '/sourcing/' | '/sourcing/category/$categoryId'
+  to:
+    | '/'
+    | '/sourcing'
+    | '/sourcing/category/$categoryId'
+    | '/sourcing/product/$productId'
+  id:
+    | '__root__'
+    | '/'
+    | '/sourcing/'
+    | '/sourcing/category/$categoryId'
+    | '/sourcing/product/$productId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   SourcingIndexRoute: typeof SourcingIndexRoute
   SourcingCategoryCategoryIdRoute: typeof SourcingCategoryCategoryIdRoute
+  SourcingProductProductIdRoute: typeof SourcingProductProductIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -83,6 +107,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SourcingCategoryCategoryIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sourcing/product/$productId': {
+      id: '/sourcing/product/$productId'
+      path: '/sourcing/product/$productId'
+      fullPath: '/sourcing/product/$productId'
+      preLoaderRoute: typeof SourcingProductProductIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -90,6 +121,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SourcingIndexRoute: SourcingIndexRoute,
   SourcingCategoryCategoryIdRoute: SourcingCategoryCategoryIdRoute,
+  SourcingProductProductIdRoute: SourcingProductProductIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
