@@ -80,12 +80,7 @@ export function AppHeader({
             <ArrowLeft className="h-5 w-5" aria-hidden />
           </button>
         ) : (
-          <span
-            aria-hidden
-            className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-primary text-primary-foreground"
-          >
-            {role === "supplier" ? <Store className="h-4 w-4" /> : <Layers className="h-4 w-4" />}
-          </span>
+          <span aria-hidden className="h-6 w-1 shrink-0 rounded-full bg-primary" />
         )}
         <div className="min-w-0">
           <h1 className="truncate text-base font-bold text-foreground">{title}</h1>
