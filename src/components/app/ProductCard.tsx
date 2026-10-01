@@ -48,6 +48,54 @@ export function daysUntil(fromIso: string, toIso: string): number {
   return Math.max(0, Math.ceil((new Date(toIso).getTime() - new Date(fromIso).getTime()) / 86400000));
 }
 
+/** Full-width batch row: complete specs, material price, origin, progress and one action. */
+export function BatchRow({ product, batch }: { product: Product; batch: Batch }) {
+  const { s, t, lang } = useApp();
+  const hi = lang === "hi";
+  const sup = getSupplier(product.supplierId);
+  const left = Math.max(0, batch.thresholdQty - batch.committedQty);
+  const pct = Math.min(100, Math.round((batch.committedQty / batch.thresholdQty) * 100));
+  const closes = daysUntil(s.demoNow, batch.expiresAt);
+  const specs = product.specs.filter((sp) => ["gsm", "composition", "width", "size", "material", "thickness"].includes(sp.key));
+  const line1 = specs.slice(0, 2).map((sp) => sp.value).join(" · ");
+  const line2 = specs.slice(2, 4).map((sp) => sp.value).join(" · ");
+  return (
+    <Link
+      to="/sourcing/product/$productId"
+      params={{ productId: product.id }}
+      search={{ route: "batch" }}
+      className="grid grid-cols-[96px_minmax(0,1fr)] gap-3 rounded-xl bg-card p-3"
+    >
+      <MaterialTile swatch={product.image} label={product.nameEn} className="aspect-square w-full" />
+      <div className="min-w-0">
+        <p className="text-sm font-semibold text-foreground">{hi ? product.nameHi : product.nameEn}</p>
+        <p className="text-xs text-muted-foreground">{line1}</p>
+        {line2 ? <p className="text-xs text-muted-foreground">{line2}</p> : null}
+        <p className="num mt-1 text-sm font-bold text-foreground">
+          {perUnit(batch.unitPricePaise, product.unit)}{" "}
+          <span className="text-xs font-normal text-muted-foreground">{hi ? "मटीरियल दाम" : "material price"}</span>
+        </p>
+        <p className="text-xs text-muted-foreground">
+          {t("shipsFrom")} {sup.city} · {hi ? `पक्का होने पर ~${batch.leadDays} दिन` : `~${batch.leadDays} days if confirmed`}
+        </p>
+        <div className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-secondary" aria-hidden>
+          <div className="h-full rounded-full bg-primary" style={{ width: `${pct}%` }} />
+        </div>
+        <p className="num mt-1 text-xs text-foreground">
+          {batch.committedQty.toLocaleString("en-IN")}/{batch.thresholdQty.toLocaleString("en-IN")} {product.unit} ·{" "}
+          <span className="font-semibold text-primary">
+            {left.toLocaleString("en-IN")} {product.unit} {hi ? "बाकी" : "left"}
+          </span>
+        </p>
+        <div className="mt-1 flex items-center justify-between gap-2">
+          <span className="text-xs text-muted-foreground">{hi ? `${closes} दिन में बंद` : `Closes in ${closes} days`}</span>
+          <span className="text-sm font-semibold text-primary">{hi ? "बैच देखें" : "View batch"} →</span>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
 export function ProductCard({ product, batch }: { product: Product; batch?: Batch }) {
   const { s, t, lang } = useApp();
   const sup = getSupplier(product.supplierId);

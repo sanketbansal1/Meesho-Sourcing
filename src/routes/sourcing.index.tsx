@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { MapPin, Mic, Search, SlidersHorizontal } from "lucide-react";
 import { useMemo, useState } from "react";
-import { ProductCard } from "@/components/app/ProductCard";
+import { BatchRow, ProductCard } from "@/components/app/ProductCard";
 import { Screen } from "@/components/app/Shell";
 import { Button, Card, Empty, Field, Input, MaterialTile, Pill, SectionTitle, Select, Sheet } from "@/components/app/ui";
 import { CATEGORIES, PRODUCTS, SELLER, SUPPLIERS, getProduct } from "@/lib/demo/catalog";
@@ -173,10 +173,10 @@ function SourcingScreen() {
       ) : (
         <>
           <SectionTitle>{t("openBatches")}</SectionTitle>
-          <div className="grid grid-cols-2 gap-2 px-4">
+          <div className="space-y-2 px-4">
             {openBatches.map((b) => {
               const p = getProduct(b.productId)!;
-              return <ProductCard key={b.id} product={p} batch={b} />;
+              return <BatchRow key={b.id} product={p} batch={b} />;
             })}
           </div>
 
