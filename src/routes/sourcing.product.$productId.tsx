@@ -84,8 +84,9 @@ function ProductScreen() {
   const sample = s.samples.find((x) => x.productId === product.id);
   const sampleApproved = sample?.status === "approved";
   const needsSample = Boolean(product.requiresSampleApproval) && !sampleApproved;
-  const saving =
-    pricing && product.localQuotePaise ? savingsVsLocal(pricing, product.localQuotePaise) : null;
+  const localPaise = Math.round((Number(localQuote) || 0) * 100);
+  const saving = pricing && product.localQuotePaise && localPaise > 0 ? savingsVsLocal(pricing, localPaise) : null;
+  const remaining = batch ? Math.max(0, batch.thresholdQty - batch.committedQty) : 0;
 
   const options = product.alternatives
     ? [
