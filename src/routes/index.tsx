@@ -90,7 +90,7 @@ function HomeScreen() {
         <>
           <SectionTitle>{t("yourSourcingOrder")}</SectionTitle>
           <div className="px-4">
-            <Link to="/orders/$orderId" params={{ orderId: activeOrder.id }}>
+            <Link to="/orders/$orderId" search={{ placed: false }} params={{ orderId: activeOrder.id }}>
               <Card>
                 <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-2">
                   <p className="min-w-0 truncate text-sm font-semibold text-foreground">

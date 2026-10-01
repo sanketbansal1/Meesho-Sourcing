@@ -297,7 +297,7 @@ export const actions = {
       if (!o || o.stage === "expired_refunded") return;
       const idx = ORDER_FLOW.indexOf(o.stage);
       if (idx < 0 || idx >= ORDER_FLOW.length - 2) return; // "received" is a seller action
-      const next = ORDER_FLOW[idx + 1];
+      const next = ORDER_FLOW[idx + 1]!;
       if (next === "confirmed" && o.route === "batch") {
         const b = s.batches.find((x) => x.id === o.batchId);
         if (b && b.status !== "confirmed") return; // can't confirm before the batch fills

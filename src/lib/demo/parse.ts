@@ -89,7 +89,7 @@ export function parseRequirement(input: string): ParsedRequirement {
     text.match(/(\d[\d,]*)\s*(pack|packs|cone|cones)/) ||
     text.match(/(\d[\d,]*)\s*(?=\s*(?:black|white|cotton|कॉटन))/);
   if (qtyMatch) {
-    out.qty = parseInt(qtyMatch[1].replace(/,/g, ""), 10);
+    out.qty = parseInt(qtyMatch[1]!.replace(/,/g, ""), 10);
     const u = (qtyMatch[2] || "").toLowerCase();
     out.unit = u.startsWith("p") && !u.startsWith("pack") ? "pc" : u.startsWith("pack") ? "pack" : u.startsWith("cone") ? "cone" : "m";
   }
@@ -112,16 +112,16 @@ export function parseRequirement(input: string): ParsedRequirement {
   }
 
   const gsm = text.match(/(\d{2,4})\s*gsm/);
-  if (gsm) out.gsm = parseInt(gsm[1], 10);
+  if (gsm) out.gsm = parseInt(gsm[1]!, 10);
 
   const width = text.match(/(\d{2,3})\s*(inch|in\b|"|इंच)/);
-  if (width) out.widthIn = parseInt(width[1], 10);
+  if (width) out.widthIn = parseInt(width[1]!, 10);
 
   const city = CITIES.find((c) => text.includes(c));
   if (city) out.destination = city === "दिल्ली" ? "Delhi" : city.charAt(0).toUpperCase() + city.slice(1);
 
   const days = text.match(/(\d{1,3})\s*(day|days|din|दिन)/);
-  if (days) out.withinDays = parseInt(days[1], 10);
+  if (days) out.withinDays = parseInt(days[1]!, 10);
 
   out.understood = Boolean(out.material || out.qty);
 

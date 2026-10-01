@@ -56,7 +56,7 @@ export function TourBar() {
   const { s, t, lang } = useApp();
   const navigate = useNavigate();
   if (!s.tour.active) return null;
-  const step = TOUR_STEPS[Math.min(s.tour.step, TOUR_STEPS.length - 1)];
+  const step = TOUR_STEPS[Math.min(s.tour.step, TOUR_STEPS.length - 1)]!;
   const isLast = s.tour.step >= TOUR_STEPS.length - 1;
 
   return (

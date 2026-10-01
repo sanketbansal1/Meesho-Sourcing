@@ -44,7 +44,7 @@ function SourcingScreen() {
     const term = q.trim().toLowerCase();
     return PRODUCTS.filter((p) => {
       if (category && p.categoryId !== category) return false;
-      if (origin && SUPPLIERS[p.supplierId].city !== origin) return false;
+      if (origin && SUPPLIERS[p.supplierId]!.city !== origin) return false;
       const batch = s.batches.find((b) => b.id === p.batchId && b.status === "open");
       if (avail === "batch" && !batch) return false;
       if (avail === "buynow" && !p.buyNow) return false;
@@ -57,7 +57,7 @@ function SourcingScreen() {
         p.nameEn,
         p.nameHi,
         ...p.specs.map((sp) => `${sp.labelEn} ${sp.value}`),
-        SUPPLIERS[p.supplierId].city,
+        SUPPLIERS[p.supplierId]!.city,
       ]
         .join(" ")
         .toLowerCase();
@@ -125,6 +125,15 @@ function SourcingScreen() {
             <span className="block text-[11px] text-primary/80">{t("tellUsSub")}</span>
           </span>
         </button>
+
+        {s.quotes.length > 0 ? (
+          <Link to="/quotes">
+            <Card className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
+              <span className="min-w-0 truncate text-sm font-semibold text-foreground">{t("quotesReceived")}</span>
+              <span className="num text-xs font-bold text-primary">{s.quotes.length}</span>
+            </Card>
+          </Link>
+        ) : null}
 
         <Link to="/payments">
           <Card className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
