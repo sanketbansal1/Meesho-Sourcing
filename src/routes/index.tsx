@@ -1,14 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Info, Layers, Package, Wallet } from "lucide-react";
-import { useState } from "react";
-import { IntroSheet } from "@/components/app/IntroSheet";
+import { ChevronRight, Compass, Sparkles } from "lucide-react";
 import { Screen } from "@/components/app/Shell";
-import { Button, Card, MaterialTile, Note, Pill, SectionTitle } from "@/components/app/ui";
-import { SELLER, getProduct } from "@/lib/demo/catalog";
-import { rupees } from "@/lib/demo/money";
+import { MaterialTile, Pill } from "@/components/app/ui";
+import { CATEGORIES, SELLER, getProduct } from "@/lib/demo/catalog";
+import { perUnit, rupees } from "@/lib/demo/money";
 import { MARKETPLACE } from "@/lib/demo/seed";
 import { actions } from "@/lib/demo/store";
-import { formatDate, useApp } from "@/lib/useApp";
+import { useApp } from "@/lib/useApp";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -24,187 +22,208 @@ export const Route = createFileRoute("/")({
         property: "og:description",
         content: "Explore pooled raw-material procurement for small Meesho sellers.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: HomeScreen,
 });
 
+const SHORT_CAT: Record<string, [string, string]> = {
+  fabrics: ["Fabrics", "कपड़ा"],
+  trims: ["Trims", "ट्रिम्स"],
+  packaging: ["Packaging", "पैकेजिंग"],
+  jewellery: ["Jewellery parts", "ज्वेलरी पुर्जे"],
+};
+
+function relativeDay(nowIso: string, atIso: string, hi: boolean): string {
+  const d = Math.round((new Date(nowIso).setUTCHours(0, 0, 0, 0) - new Date(atIso).setUTCHours(0, 0, 0, 0)) / 86400000);
+  if (d <= 0) return hi ? "आज" : "Today";
+  if (d === 1) return hi ? "कल" : "Yesterday";
+  return hi ? `${d} दिन पहले` : `${d} days ago`;
+}
+
 function HomeScreen() {
   const { s, t, lang } = useApp();
   const hi = lang === "hi";
-  const [intro, setIntro] = useState(false);
-  const jersey = getProduct("fab-jersey-black");
-  const jerseyBatch = s.batches.find((b) => b.id === "batch-jersey");
-  const activeOrder = s.orders.find((o) => o.stage !== "received" && o.stage !== "expired_refunded");
-  const unread = s.notifications.filter((n) => n.forRole !== "supplier").slice(0, 4);
+  const jersey = getProduct("fab-jersey-black")!;
+  const batch = s.batches.find((b) => b.id === "batch-jersey");
+  const left = batch ? Math.max(0, batch.thresholdQty - batch.committedQty) : 0;
+  const pct = batch ? Math.min(100, Math.round((batch.committedQty / batch.thresholdQty) * 100)) : 0;
+  const closesIn = batch
+    ? Math.max(0, Math.ceil((new Date(batch.expiresAt).getTime() - new Date(s.demoNow).getTime()) / 86400000))
+    : 0;
+  // Seeded notifications repeat the featured batch — only show genuine new events.
+  const updates = s.notifications
+    .filter((n) => n.forRole !== "supplier" && !n.id.startsWith("ntf-seed"))
+    .slice(0, 3);
+
+  const metrics = [
+    { value: String(MARKETPLACE.ordersToday), label: hi ? "आज के ऑर्डर" : "orders today" },
+    { value: String(MARKETPLACE.pendingDispatch), label: hi ? "डिस्पैच बाकी" : "to dispatch" },
+    { value: rupees(MARKETPLACE.upcomingSettlementPaise), label: hi ? "सेटलमेंट" : "settlement", to: "/payments" as const },
+  ];
 
   return (
-    <Screen title={SELLER.business} subtitle={`${SELLER.owner} · ${SELLER.city}`} right={<Pill tone="brand">{t("conceptDemo")}</Pill>}>
-      <div className="space-y-3 px-4 pt-3">
-        <div>
-          <p className="text-lg font-bold text-foreground">{t("greeting")}</p>
-          <p className="text-xs text-muted-foreground">{SELLER.type}</p>
-        </div>
+    <Screen
+      title="Meesho Sourcing"
+      subtitle={`${SELLER.business} · ${SELLER.city}`}
+    >
+      <div className="min-h-full space-y-5 bg-surface px-4 pb-4 pt-4">
+        {/* B. Greeting + summary */}
+        <section className="space-y-2">
+          <div className="flex items-center justify-between gap-2">
+            <h2 className="text-xl font-bold text-foreground">{t("greeting")}</h2>
+            <Pill tone="brand">{t("conceptDemo")}</Pill>
+          </div>
+          <div className="grid grid-cols-3 divide-x divide-border rounded-xl bg-card py-3">
+            {metrics.map((m) => {
+              const inner = (
+                <>
+                  <span className="num block text-base font-bold text-foreground">{m.value}</span>
+                  <span className="block text-xs text-muted-foreground">{m.label}</span>
+                </>
+              );
+              return m.to ? (
+                <Link key={m.label} to={m.to} className="px-2 text-center">
+                  {inner}
+                </Link>
+              ) : (
+                <div key={m.label} className="px-2 text-center">
+                  {inner}
+                </div>
+              );
+            })}
+          </div>
+        </section>
 
-        <div className="grid grid-cols-3 gap-2">
-          <Card className="p-2.5">
-            <Package className="h-4 w-4 text-primary" aria-hidden />
-            <p className="num mt-1 text-base font-bold text-foreground">{MARKETPLACE.ordersToday}</p>
-            <p className="text-[10px] leading-tight text-muted-foreground">{t("marketplaceToday")}</p>
-          </Card>
-          <Card className="p-2.5">
-            <Layers className="h-4 w-4 text-primary" aria-hidden />
-            <p className="num mt-1 text-base font-bold text-foreground">{MARKETPLACE.pendingDispatch}</p>
-            <p className="text-[10px] leading-tight text-muted-foreground">{t("pendingDispatch")}</p>
-          </Card>
-          <Card className="p-2.5">
-            <Wallet className="h-4 w-4 text-positive" aria-hidden />
-            <p className="num mt-1 text-base font-bold text-foreground">
-              {rupees(MARKETPLACE.upcomingSettlementPaise)}
+        {/* C. Primary sourcing feature */}
+        <section className="grid min-h-[176px] grid-cols-[minmax(0,1fr)_112px] items-center gap-3 rounded-2xl bg-primary-soft p-4">
+          <div className="min-w-0">
+            <p className="text-[11px] font-bold tracking-wider text-primary">MEESHO SOURCING</p>
+            <h2 className="mt-1 text-lg font-bold leading-tight text-foreground">
+              {hi ? "कच्चा माल। ज़्यादा संभावनाएँ।" : "Raw materials. More possibilities."}
+            </h2>
+            <p className="mt-1 text-sm text-foreground/75">
+              {hi ? "अलग-अलग क्षेत्रों के सप्लायर खोजें और साथ मिलकर खरीदें।" : "Find suppliers across regions and buy together."}
             </p>
-            <p className="text-[10px] leading-tight text-muted-foreground">{t("upcomingSettlement")}</p>
-          </Card>
-        </div>
-
-        <section className="rounded-2xl border border-primary/20 bg-primary-soft p-4">
-          <h2 className="text-lg font-bold leading-snug text-foreground">
-            {hi ? "आपके अगले प्रोडक्शन के लिए मटीरियल" : "Materials for your next production run"}
-          </h2>
-          <p className="mt-1 text-sm text-foreground/80">
-            {hi
-              ? "अलग-अलग क्षेत्रों के सप्लायर देखिए, साथ मिलकर खरीदिए और मंज़ूर सोर्सिंग क्रेडिट इस्तेमाल कीजिए।"
-              : "Explore suppliers across regions, buy together and use approved sourcing credit."}
-          </p>
-          <div className="mt-3 grid grid-cols-2 gap-2">
             <Link
               to="/sourcing"
-              className="tap flex items-center justify-center gap-1 rounded-xl bg-primary px-3 text-sm font-semibold text-primary-foreground"
+              className="tap mt-3 inline-flex items-center justify-center rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground"
             >
               {hi ? "मटीरियल देखें" : "Explore materials"}
-              <ArrowRight className="h-4 w-4" aria-hidden />
-            </Link>
-            <Link
-              to="/sourcing/requirement"
-              className="tap flex items-center justify-center rounded-xl border border-primary/40 bg-card px-3 text-center text-sm font-semibold text-primary"
-            >
-              {hi ? "अपनी ज़रूरत बताएँ" : "Describe my requirement"}
             </Link>
           </div>
+          <MaterialTile swatch="sw-fabric" label={jersey.nameEn} className="aspect-square w-full rounded-xl bg-card" />
+        </section>
 
-          {jersey && jerseyBatch && jerseyBatch.status === "open" ? (
+        {/* D. Category shortcuts */}
+        <nav aria-label={t("category")} className="grid grid-cols-4 gap-2">
+          {CATEGORIES.map((c) => (
+            <Link
+              key={c.id}
+              to="/sourcing/category/$categoryId"
+              params={{ categoryId: c.id }}
+              className="flex flex-col items-center gap-1.5 text-center"
+            >
+              <MaterialTile swatch={c.swatch} label={c.nameEn} className="aspect-square w-full rounded-xl bg-card" />
+              <span className="text-xs font-semibold leading-tight text-foreground">
+                {SHORT_CAT[c.id]?.[hi ? 1 : 0] ?? c.nameEn}
+              </span>
+            </Link>
+          ))}
+        </nav>
+
+        {/* E. Featured batch */}
+        {batch ? (
+          <section className="space-y-2">
+            <h2 className="text-base font-bold text-foreground">{hi ? "साथ मिलकर खरीदें" : "Buy together"}</h2>
             <Link
               to="/sourcing/product/$productId"
               params={{ productId: jersey.id }}
-              search={{ route: "batch" }}
-              className="mt-3 grid grid-cols-[64px_minmax(0,1fr)] items-center gap-3 rounded-xl bg-card p-2"
+              search={{ route: batch.status === "open" ? "batch" : "buynow" }}
+              className="grid grid-cols-[88px_minmax(0,1fr)] gap-3 rounded-xl bg-card p-3"
             >
-              <MaterialTile swatch={jersey.image} label={jersey.nameEn} className="aspect-square w-16" />
+              <MaterialTile swatch={jersey.image} label={jersey.nameEn} className="aspect-square w-full" />
               <div className="min-w-0">
-                <p className="truncate text-xs font-semibold text-foreground">{hi ? jersey.nameHi : jersey.nameEn}</p>
-                <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-secondary" aria-hidden>
-                  <div
-                    className="h-full rounded-full bg-primary"
-                    style={{ width: `${(jerseyBatch.committedQty / jerseyBatch.thresholdQty) * 100}%` }}
-                  />
-                </div>
-                <p className="num mt-1 text-[11px] text-foreground">
-                  {jerseyBatch.committedQty.toLocaleString("en-IN")}/{jerseyBatch.thresholdQty.toLocaleString("en-IN")} m ·{" "}
-                  <span className="font-semibold text-primary">
-                    {jerseyBatch.thresholdQty - jerseyBatch.committedQty} m {hi ? "बाकी" : "left to confirm"}
-                  </span>
+                <p className="text-sm font-semibold text-foreground">{hi ? jersey.nameHi : jersey.nameEn}</p>
+                <p className="text-xs text-muted-foreground">180 GSM · {hi ? "60 इंच चौड़ाई" : "60-inch width"}</p>
+                <p className="num mt-0.5 text-sm font-bold text-foreground">
+                  {perUnit(batch.unitPricePaise, jersey.unit)}{" "}
+                  <span className="text-xs font-normal text-muted-foreground">{hi ? "मटीरियल दाम" : "material price"}</span>
                 </p>
+                <div className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-secondary" aria-hidden>
+                  <div className="h-full rounded-full bg-primary" style={{ width: `${pct}%` }} />
+                </div>
+                <p className="num mt-1 text-xs text-foreground">
+                  {batch.committedQty.toLocaleString("en-IN")}/{batch.thresholdQty.toLocaleString("en-IN")} m ·{" "}
+                  {batch.status === "open" ? (
+                    <span className="font-semibold text-primary">
+                      {left} m {hi ? "बाकी" : "left to confirm"}
+                    </span>
+                  ) : (
+                    <span className="font-semibold text-positive">
+                      {batch.status === "confirmed" ? (hi ? "बैच पक्का" : "Batch confirmed") : hi ? "बंद" : "Closed"}
+                    </span>
+                  )}
+                </p>
+                <div className="mt-1 flex items-center justify-between gap-2">
+                  {batch.status === "open" ? (
+                    <span className="text-xs text-muted-foreground">
+                      {hi ? `${closesIn} दिन में बंद` : `Closes in ${closesIn} days`}
+                    </span>
+                  ) : (
+                    <span />
+                  )}
+                  <span className="text-sm font-semibold text-primary">{hi ? "बैच देखें" : "View batch"} →</span>
+                </div>
               </div>
             </Link>
-          ) : null}
+          </section>
+        ) : null}
 
-          <ol className="mt-3 grid grid-cols-3 gap-1 text-center text-[11px] font-semibold text-foreground">
-            {(hi
-              ? ["मटीरियल खरीदें", "प्रोडक्ट बनाएँ", "बिक्री से किश्त"]
-              : ["Source materials", "Make products", "Track repayment from sales"]
-            ).map((label, i) => (
-              <li key={label} className="relative rounded-lg bg-card px-1 py-2">
-                <span className="num mb-0.5 block text-primary">{i + 1}</span>
-                {label}
-              </li>
-            ))}
-          </ol>
-        </section>
-
-        <div className="grid grid-cols-2 gap-2">
-          <Button
-            onClick={() => {
-              actions.startTour();
-            }}
-          >
-            {hi ? "पूरी यात्रा आज़माएँ" : "Try full journey"}
-          </Button>
-          <Link
-            to="/sourcing"
-            className="tap flex items-center justify-center rounded-xl border border-border bg-card text-sm font-semibold text-foreground"
-          >
-            {hi ? "खुद देखें" : "Explore freely"}
-          </Link>
-        </div>
-
-        <button
-          onClick={() => setIntro(true)}
-          className="tap flex w-full items-center gap-2 rounded-xl border border-border bg-card px-3 py-2.5 text-left"
+        {/* F. AI entry */}
+        <Link
+          to="/sourcing/requirement"
+          className="tap grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 rounded-xl bg-card px-3 py-3"
         >
-          <Info className="h-4 w-4 shrink-0 text-primary" aria-hidden />
-          <span className="min-w-0 flex-1 text-sm font-semibold text-foreground">{t("exploreConcept")}</span>
-          <ArrowRight className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden />
+          <span className="grid h-9 w-9 place-items-center rounded-full bg-primary-soft text-primary">
+            <Sparkles className="h-4 w-4" aria-hidden />
+          </span>
+          <span className="min-w-0">
+            <span className="block text-xs text-muted-foreground">{hi ? "समझ नहीं आ रहा कहाँ से शुरू करें?" : "Not sure where to start?"}</span>
+            <span className="block text-sm font-semibold text-foreground">{hi ? "बताइए आपको क्या चाहिए" : "Describe what you need"}</span>
+          </span>
+          <ChevronRight className="h-4 w-4 text-muted-foreground" aria-hidden />
+        </Link>
+
+        {/* Updates — only meaningful new events */}
+        {updates.length ? (
+          <section className="space-y-2">
+            <h2 className="text-base font-bold text-foreground">{t("notifications")}</h2>
+            <ul className="divide-y divide-border rounded-xl bg-card">
+              {updates.map((n) => (
+                <li key={n.id} className="px-3 py-2.5">
+                  <p className="text-sm text-foreground">{hi ? n.titleHi : n.titleEn}</p>
+                  <p className="mt-0.5 text-xs text-muted-foreground">{relativeDay(s.demoNow, n.at, hi)}</p>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
+
+        {/* G. Secondary demo help */}
+        <button
+          onClick={() => actions.startTour()}
+          className="tap flex w-full items-center justify-center gap-2 text-sm text-muted-foreground"
+        >
+          <Compass className="h-4 w-4" aria-hidden />
+          <span>
+            {hi ? "सोर्सिंग कैसे काम करती है · " : "See how sourcing works · "}
+            <span className="font-semibold text-primary">{hi ? "वॉकथ्रू शुरू करें" : "Start walkthrough"}</span>
+          </span>
         </button>
       </div>
-
-      {activeOrder ? (
-        <>
-          <SectionTitle>{t("yourSourcingOrder")}</SectionTitle>
-          <div className="px-4">
-            <Link to="/orders/$orderId" search={{ placed: false }} params={{ orderId: activeOrder.id }}>
-              <Card>
-                <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-2">
-                  <p className="min-w-0 truncate text-sm font-semibold text-foreground">
-                    {activeOrder.productName}
-                  </p>
-                  <Pill tone="brand">{t(`stage_${activeOrder.stage}`)}</Pill>
-                </div>
-                <p className="num mt-1 text-xs text-muted-foreground">
-                  {activeOrder.id} · {activeOrder.pricing.qty} {lang === "hi" ? "यूनिट" : "units"} ·{" "}
-                  {rupees(activeOrder.pricing.totalPaise)}
-                </p>
-              </Card>
-            </Link>
-          </div>
-        </>
-      ) : null}
-
-      <SectionTitle>{t("notifications")}</SectionTitle>
-      <ul className="space-y-2 px-4">
-        {unread.map((n) => (
-          <li key={n.id}>
-            <Card className="p-2.5">
-              <p className="text-xs text-foreground">{lang === "hi" ? n.titleHi : n.titleEn}</p>
-              <p className="mt-1 text-[10px] text-muted-foreground">{formatDate(n.at, lang)}</p>
-            </Card>
-          </li>
-        ))}
-      </ul>
-
-      <div className="px-4 py-4">
-        <Note>
-          {t("demoData")}. {lang === "hi"
-            ? "यह एक स्वतंत्र कॉन्सेप्ट प्रोटोटाइप है, मीशो का असली उत्पाद नहीं।"
-            : "This is an independent concept prototype, not an actual Meesho product."}
-        </Note>
-      </div>
-
-      <div className="px-4 pb-2">
-        <Button variant="ghost" size="sm" onClick={() => actions.setLang(s.lang === "en" ? "hi" : "en")}>
-          {s.lang === "en" ? "हिन्दी में देखें" : "View in English"}
-        </Button>
-      </div>
-
-      <IntroSheet open={intro} onClose={() => setIntro(false)} />
     </Screen>
   );
 }

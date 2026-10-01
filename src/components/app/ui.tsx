@@ -1,5 +1,5 @@
 import { cva, type VariantProps } from "class-variance-authority";
-import { Anchor, Box, CircleDot, Layers, Link2, type LucideIcon, Ribbon, Shirt, Spool, Tag } from "lucide-react";
+import { Anchor, Box, CircleDot, Scroll, Link2, type LucideIcon, Ribbon, Shirt, Spool, Tag } from "lucide-react";
 import type { ButtonHTMLAttributes, InputHTMLAttributes, ReactNode, SelectHTMLAttributes } from "react";
 import bagImg from "@/assets/courier-bags-grey.webp.asset.json";
 import fabricImg from "@/assets/fabric-jersey-black.webp.asset.json";
@@ -252,7 +252,7 @@ const PHOTOS: Record<string, string> = {
 /** Honest category illustrations for SKUs without a matching photo. */
 const ILLUSTRATIONS: Record<string, { icon: LucideIcon; tone: string }> = {
   "sw-woven": { icon: Shirt, tone: "ill-cream" },
-  "sw-lining": { icon: Layers, tone: "ill-grey" },
+  "sw-lining": { icon: Scroll, tone: "ill-grey" },
   "sw-elastic": { icon: Ribbon, tone: "ill-cream" },
   "sw-thread": { icon: Spool, tone: "ill-dark" },
   "sw-box": { icon: Box, tone: "ill-kraft" },

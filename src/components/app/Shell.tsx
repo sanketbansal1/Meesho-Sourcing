@@ -1,4 +1,4 @@
-import { Link, useRouter } from "@tanstack/react-router";
+import { Link, useRouter, useRouterState } from "@tanstack/react-router";
 import {
   ArrowLeft,
   ClipboardList,
@@ -7,20 +7,35 @@ import {
   Inbox,
   Layers,
   type LucideIcon,
-  Store,
   User,
   Wand2,
 } from "lucide-react";
-import type { ReactNode } from "react";
+import { type ReactNode, useEffect } from "react";
+import { actions } from "@/lib/demo/store";
 import { useApp } from "@/lib/useApp";
 import { cn } from "@/lib/utils";
 import { Pill } from "./ui";
 
 type NavItem = { to: string; icon: LucideIcon; label: string };
 
+const SHARED_PATHS = ["/demo", "/about"];
+
+/** The route decides the role; shared utility pages fall back to the stored role. */
+export function useRouteRole(): "seller" | "supplier" {
+  const { s } = useApp();
+  const path = useRouterState({ select: (st) => st.location.pathname });
+  if (path.startsWith("/supplier")) return "supplier";
+  if (SHARED_PATHS.some((p) => path.startsWith(p))) return s.role;
+  return "seller";
+}
+
 function useNav(): NavItem[] {
   const { s, t } = useApp();
-  if (s.role === "supplier") {
+  const role = useRouteRole();
+  useEffect(() => {
+    if (role !== s.role) actions.setRole(role);
+  }, [role, s.role]);
+  if (role === "supplier") {
     return [
       { to: "/supplier", icon: Home, label: t("nav_home") },
       { to: "/supplier/demand", icon: Inbox, label: t("nav_demand") },
@@ -63,23 +78,25 @@ export function AppHeader({
             <ArrowLeft className="h-5 w-5" aria-hidden />
           </button>
         ) : (
-          <span
-            aria-hidden
-            className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-primary text-primary-foreground"
-          >
-            {s.role === "supplier" ? <Store className="h-4 w-4" /> : <Layers className="h-4 w-4" />}
-          </span>
+          <span aria-hidden className="h-6 w-1 shrink-0 rounded-full bg-primary" />
         )}
         <div className="min-w-0">
-          <h1 className="truncate text-base font-bold text-foreground">{title}</h1>
+          <h1 className="truncate text-[15px] font-bold text-foreground">{title}</h1>
           {subtitle ? <p className="truncate text-[11px] text-muted-foreground">{subtitle}</p> : null}
         </div>
-        <div className="flex shrink-0 items-center gap-1">
+        <div className="flex shrink-0 items-center gap-0.5">
           {right}
+          <button
+            onClick={() => actions.setLang(s.lang === "en" ? "hi" : "en")}
+            aria-label={s.lang === "en" ? "हिन्दी में देखें" : "View in English"}
+            className="tap grid place-items-center rounded-lg px-1.5 text-xs font-semibold text-foreground hover:bg-secondary"
+          >
+            {s.lang === "en" ? "हि" : "EN"}
+          </button>
           <Link
             to="/demo"
             aria-label={t("demoControls")}
-            className="tap flex items-center gap-1 rounded-lg px-2 text-xs font-semibold text-primary hover:bg-primary-soft"
+            className="tap flex items-center gap-1 rounded-lg px-1.5 text-xs font-semibold text-primary hover:bg-primary-soft"
           >
             <Wand2 className="h-4 w-4" aria-hidden />
             <span>Demo</span>
