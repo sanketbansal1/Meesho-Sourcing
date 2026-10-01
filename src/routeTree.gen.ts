@@ -11,6 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CheckoutProductIdRouteImport } from './routes/checkout.$productId'
+import { Route as OrdersIndexRouteImport } from './routes/orders.index'
+import { Route as OrdersOrderIdRouteImport } from './routes/orders.$orderId'
 import { Route as SourcingIndexRouteImport } from './routes/sourcing.index'
 import { Route as SourcingRequirementRouteImport } from './routes/sourcing.requirement'
 import { Route as SourcingCategoryCategoryIdRouteImport } from './routes/sourcing.category.$categoryId'
@@ -24,6 +26,16 @@ const IndexRoute = IndexRouteImport.update({
 const CheckoutProductIdRoute = CheckoutProductIdRouteImport.update({
   id: '/checkout/$productId',
   path: '/checkout/$productId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OrdersIndexRoute = OrdersIndexRouteImport.update({
+  id: '/orders/',
+  path: '/orders/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OrdersOrderIdRoute = OrdersOrderIdRouteImport.update({
+  id: '/orders/$orderId',
+  path: '/orders/$orderId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SourcingIndexRoute = SourcingIndexRouteImport.update({
@@ -52,7 +64,9 @@ const SourcingProductProductIdRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/checkout/$productId': typeof CheckoutProductIdRoute
+  '/orders/$orderId': typeof OrdersOrderIdRoute
   '/sourcing/requirement': typeof SourcingRequirementRoute
+  '/orders/': typeof OrdersIndexRoute
   '/sourcing/': typeof SourcingIndexRoute
   '/sourcing/category/$categoryId': typeof SourcingCategoryCategoryIdRoute
   '/sourcing/product/$productId': typeof SourcingProductProductIdRoute
@@ -60,7 +74,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/checkout/$productId': typeof CheckoutProductIdRoute
+  '/orders/$orderId': typeof OrdersOrderIdRoute
   '/sourcing/requirement': typeof SourcingRequirementRoute
+  '/orders': typeof OrdersIndexRoute
   '/sourcing': typeof SourcingIndexRoute
   '/sourcing/category/$categoryId': typeof SourcingCategoryCategoryIdRoute
   '/sourcing/product/$productId': typeof SourcingProductProductIdRoute
@@ -69,7 +85,9 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/checkout/$productId': typeof CheckoutProductIdRoute
+  '/orders/$orderId': typeof OrdersOrderIdRoute
   '/sourcing/requirement': typeof SourcingRequirementRoute
+  '/orders/': typeof OrdersIndexRoute
   '/sourcing/': typeof SourcingIndexRoute
   '/sourcing/category/$categoryId': typeof SourcingCategoryCategoryIdRoute
   '/sourcing/product/$productId': typeof SourcingProductProductIdRoute
@@ -79,7 +97,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/checkout/$productId'
+    | '/orders/$orderId'
     | '/sourcing/requirement'
+    | '/orders/'
     | '/sourcing/'
     | '/sourcing/category/$categoryId'
     | '/sourcing/product/$productId'
@@ -87,7 +107,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/checkout/$productId'
+    | '/orders/$orderId'
     | '/sourcing/requirement'
+    | '/orders'
     | '/sourcing'
     | '/sourcing/category/$categoryId'
     | '/sourcing/product/$productId'
@@ -95,7 +117,9 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/checkout/$productId'
+    | '/orders/$orderId'
     | '/sourcing/requirement'
+    | '/orders/'
     | '/sourcing/'
     | '/sourcing/category/$categoryId'
     | '/sourcing/product/$productId'
@@ -104,7 +128,9 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CheckoutProductIdRoute: typeof CheckoutProductIdRoute
+  OrdersOrderIdRoute: typeof OrdersOrderIdRoute
   SourcingRequirementRoute: typeof SourcingRequirementRoute
+  OrdersIndexRoute: typeof OrdersIndexRoute
   SourcingIndexRoute: typeof SourcingIndexRoute
   SourcingCategoryCategoryIdRoute: typeof SourcingCategoryCategoryIdRoute
   SourcingProductProductIdRoute: typeof SourcingProductProductIdRoute
@@ -124,6 +150,20 @@ declare module '@tanstack/react-router' {
       path: '/checkout/$productId'
       fullPath: '/checkout/$productId'
       preLoaderRoute: typeof CheckoutProductIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/orders/': {
+      id: '/orders/'
+      path: '/orders'
+      fullPath: '/orders/'
+      preLoaderRoute: typeof OrdersIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/orders/$orderId': {
+      id: '/orders/$orderId'
+      path: '/orders/$orderId'
+      fullPath: '/orders/$orderId'
+      preLoaderRoute: typeof OrdersOrderIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sourcing/': {
@@ -160,7 +200,9 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CheckoutProductIdRoute: CheckoutProductIdRoute,
+  OrdersOrderIdRoute: OrdersOrderIdRoute,
   SourcingRequirementRoute: SourcingRequirementRoute,
+  OrdersIndexRoute: OrdersIndexRoute,
   SourcingIndexRoute: SourcingIndexRoute,
   SourcingCategoryCategoryIdRoute: SourcingCategoryCategoryIdRoute,
   SourcingProductProductIdRoute: SourcingProductProductIdRoute,
