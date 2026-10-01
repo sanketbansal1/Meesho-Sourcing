@@ -24,7 +24,7 @@ export const Route = createFileRoute("/supplier/account")({
 function SupplierAccount() {
   const { s, t, lang } = useApp();
   const navigate = useNavigate();
-  const me = SUPPLIERS["sup-surat"];
+  const me = SUPPLIERS["sup-surat"]!;
 
   return (
     <Screen title={t("nav_account")}>

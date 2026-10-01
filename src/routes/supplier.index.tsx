@@ -23,7 +23,7 @@ export const Route = createFileRoute("/supplier/")({
 
 function SupplierHome() {
   const { s, t, lang } = useApp();
-  const me = SUPPLIERS["sup-surat"];
+  const me = SUPPLIERS["sup-surat"]!;
   const openBatches = s.batches.filter((b) => getProduct(b.productId)?.supplierId === me.id);
   const pos = s.pos;
   const dispatchTasks = pos.filter((p) => !p.dispatchRef);
