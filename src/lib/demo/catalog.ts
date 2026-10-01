@@ -310,5 +310,5 @@ export function getProduct(id: string): Product | undefined {
 }
 
 export function getSupplier(id: string): SupplierInfo {
-  return SUPPLIERS[id];
+  return SUPPLIERS[id]!;
 }
