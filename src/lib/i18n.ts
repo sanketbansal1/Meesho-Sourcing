@@ -1,0 +1,302 @@
+import type { Lang } from "./demo/types";
+
+type Dict = Record<string, [string, string]>; // [en, hi]
+
+const D: Dict = {
+  appName: ["Meesho Sourcing", "मीशो सोर्सिंग"],
+  conceptDemo: ["Concept demo", "कॉन्सेप्ट डेमो"],
+  demoData: ["Illustrative demo data", "सिर्फ़ उदाहरण डेटा"],
+
+  // nav
+  nav_home: ["Home", "होम"],
+  nav_sourcing: ["Sourcing", "सोर्सिंग"],
+  nav_orders: ["Orders", "ऑर्डर"],
+  nav_payments: ["Payments", "पेमेंट"],
+  nav_account: ["Account", "अकाउंट"],
+  nav_demand: ["Demand", "माँग"],
+
+  // common
+  back: ["Back", "वापस"],
+  continue: ["Continue", "आगे बढ़ें"],
+  confirm: ["Confirm", "पक्का करें"],
+  cancel: ["Cancel", "रद्द करें"],
+  close: ["Close", "बंद करें"],
+  submit: ["Submit", "भेजें"],
+  edit: ["Edit", "बदलें"],
+  save: ["Save", "सेव करें"],
+  viewAll: ["View all", "सब देखें"],
+  details: ["Details", "विवरण"],
+  qty: ["Quantity", "मात्रा"],
+  yourQty: ["Your quantity", "आपकी मात्रा"],
+  yourShare: ["Your share", "आपका हिस्सा"],
+  deliveredPrice: ["Delivered price", "डिलीवर्ड दाम"],
+  buyTogether: ["Buy together", "मिलकर खरीदें"],
+  buyNow: ["Buy now", "अभी खरीदें"],
+  repayFromSales: ["Repay from sales", "बिक्री से चुकाएँ"],
+  amountYouReceive: ["Amount you receive", "आपको मिलने वाली रकम"],
+  perUnitPrice: ["Material price", "मटीरियल दाम"],
+  delivery: ["Delivery", "डिलीवरी"],
+  demoTax: ["Demo tax (5%)", "डेमो टैक्स (5%)"],
+  totalPayable: ["Total payable", "कुल देय"],
+  preTaxDelivered: ["Delivered total before tax", "टैक्स से पहले डिलीवर्ड कुल"],
+  savings: ["You save", "आपकी बचत"],
+  loading: ["Loading…", "लोड हो रहा है…"],
+  none: ["Nothing here yet", "अभी कुछ नहीं"],
+
+  // home
+  greeting: ["Namaste, Aarav", "नमस्ते, आरव"],
+  businessLine: ["Aarav Apparel · Delhi", "आरव अपैरल · दिल्ली"],
+  marketplaceToday: ["Customer orders today", "आज के ग्राहक ऑर्डर"],
+  pendingDispatch: ["Pending dispatch", "भेजना बाकी"],
+  upcomingSettlement: ["Upcoming settlement", "आने वाला सेटलमेंट"],
+  sourceMaterials: ["Source materials", "मटीरियल खरीदें"],
+  sourceMaterialsSub: [
+    "Buy raw materials from Meesho across regions",
+    "देशभर से कच्चा माल मीशो से खरीदें",
+  ],
+  exploreConcept: ["Explore the concept", "कॉन्सेप्ट समझें"],
+  yourSourcingOrder: ["Your sourcing order", "आपका सोर्सिंग ऑर्डर"],
+  notifications: ["Updates", "अपडेट"],
+
+  // intro
+  intro_title: ["How Meesho Sourcing works", "मीशो सोर्सिंग कैसे काम करता है"],
+  intro_1_t: ["Who it helps", "किसके लिए"],
+  intro_1_b: [
+    "Small businesses that buy raw materials, manufacture products and sell them on Meesho.",
+    "छोटे व्यवसाय जो कच्चा माल खरीदते हैं, सामान बनाते हैं और मीशो पर बेचते हैं।",
+  ],
+  intro_2_t: ["Find materials, combine demand", "माल ढूँढें, माँग जोड़ें"],
+  intro_2_b: [
+    "Compare delivered prices across regions and join other businesses buying the same specification.",
+    "अलग-अलग राज्यों के डिलीवर्ड दाम देखें और एक जैसी ज़रूरत वाले व्यवसायों के साथ जुड़ें।",
+  ],
+  intro_3_t: ["Pay upfront or use approved credit", "अभी भुगतान करें या मंज़ूर क्रेडिट लें"],
+  intro_3_b: [
+    "Choose pay now, or an approved sourcing credit line — both simulated here.",
+    "अभी पेमेंट या मंज़ूर सोर्सिंग क्रेडिट चुनें — दोनों यहाँ सिम्युलेटेड हैं।",
+  ],
+  intro_4_t: ["Receive, sell, repay from sales", "माल पाएँ, बेचें, बिक्री से चुकाएँ"],
+  intro_4_b: [
+    "Track delivery, sell finished goods on Meesho and repay through settlement deductions.",
+    "डिलीवरी ट्रैक करें, मीशो पर सामान बेचें और सेटलमेंट कटौती से किश्त चुकाएँ।",
+  ],
+  startGuided: ["Start guided demo", "गाइडेड डेमो शुरू करें"],
+  exploreFreely: ["Explore freely", "खुद घूमें"],
+
+  // sourcing
+  deliverTo: ["Deliver to", "डिलीवरी यहाँ"],
+  searchPlaceholder: ["Search material or specification", "मटीरियल या स्पेसिफिकेशन खोजें"],
+  tellUsWhatYouNeed: ["Tell us what you need", "बताइए आपको क्या चाहिए"],
+  tellUsSub: ["Type or use a sample voice request", "टाइप करें या सैंपल वॉइस रिक्वेस्ट लें"],
+  openBatches: ["Open batches you can join", "खुले बैच जिनमें जुड़ सकते हैं"],
+  buyNowMaterials: ["Buy now materials", "अभी खरीदने वाले मटीरियल"],
+  recentlyPurchased: ["Recently purchased", "हाल में खरीदा"],
+  filters: ["Filters", "फ़िल्टर"],
+  clear: ["Clear", "हटाएँ"],
+  noResults: ["No materials match these filters", "इन फ़िल्टर से कोई मटीरियल नहीं मिला"],
+  category: ["Category", "श्रेणी"],
+  origin: ["Supplier origin", "सप्लायर का शहर"],
+  maxDelivered: ["Max delivered price per unit", "अधिकतम डिलीवर्ड दाम प्रति यूनिट"],
+  availability: ["Availability", "उपलब्धता"],
+  any: ["Any", "कोई भी"],
+  shipsFrom: ["Ships from", "यहाँ से भेजा जाएगा"],
+  deliveredEstimate: ["Delivered estimate to Delhi", "दिल्ली तक अनुमानित डिलीवरी"],
+  soldByMeesho: ["Sold by Meesho — concept", "मीशो द्वारा बेचा गया — कॉन्सेप्ट"],
+
+  // product
+  specifications: ["Specifications", "स्पेसिफिकेशन"],
+  manufacturer: ["Manufacturer", "निर्माता"],
+  batchExplain: [
+    "Combine your requirement with other businesses buying the same specification. Each business receives its own quantity.",
+    "एक जैसी स्पेसिफिकेशन खरीदने वाले दूसरे व्यवसायों के साथ अपनी ज़रूरत जोड़ें। हर व्यवसाय को अपनी मात्रा मिलती है।",
+  ],
+  batchProgress: ["Batch progress", "बैच की प्रगति"],
+  batchThresholdNote: ["Batch price activates at", "बैच दाम इस मात्रा पर चालू होता है"],
+  batchClosesOn: ["Batch closes on", "बैच बंद होगा"],
+  joinBatch: ["Join this batch", "इस बैच में जुड़ें"],
+  compareOptions: ["Compare delivered options", "डिलीवर्ड विकल्प तुलना करें"],
+  compareHint: [
+    "A lower unit price is not always the better delivered option.",
+    "कम यूनिट दाम हमेशा बेहतर डिलीवर्ड सौदा नहीं होता।",
+  ],
+  sampleStatus: ["Sample status", "सैंपल की स्थिति"],
+  requestSample: ["Request sample", "सैंपल माँगें"],
+  approveSample: ["Approve sample", "सैंपल मंज़ूर करें"],
+  rejectSample: ["Reject sample", "सैंपल अस्वीकार करें"],
+  sampleApproved: ["Sample approved", "सैंपल मंज़ूर"],
+  sampleRequested: ["Sample requested", "सैंपल माँगा गया"],
+  sampleReceived: ["Sample received", "सैंपल मिला"],
+  sampleRejected: ["Sample rejected", "सैंपल अस्वीकार"],
+  sampleNeeded: ["Sample approval is required before joining this batch.", "इस बैच में जुड़ने से पहले सैंपल मंज़ूरी ज़रूरी है।"],
+  verifiedDemo: ["Supplier check — demo", "सप्लायर जाँच — डेमो"],
+  verifiedDemoBody: [
+    "In this prototype, the badge only means the material supplier record was seeded as onboarded. It is not a quality guarantee and no real inspection took place.",
+    "इस प्रोटोटाइप में यह बैज सिर्फ़ इतना बताता है कि सप्लायर रिकॉर्ड डेमो में ऑनबोर्ड है। यह गुणवत्ता की गारंटी नहीं है और कोई असली जाँच नहीं हुई।",
+  ],
+
+  // requirement
+  structuredForm: ["Fill a form", "फ़ॉर्म भरें"],
+  describeIt: ["Describe it", "बोलकर/लिखकर बताएँ"],
+  trySampleVoice: ["Try sample voice request", "सैंपल वॉइस रिक्वेस्ट आज़माएँ"],
+  voiceNote: [
+    "No microphone is used. A sample transcript is inserted that you can edit.",
+    "माइक्रोफ़ोन इस्तेमाल नहीं होता। एक सैंपल ट्रांसक्रिप्ट भरा जाता है जिसे आप बदल सकते हैं।",
+  ],
+  analyse: ["Read my requirement", "मेरी ज़रूरत पढ़ें"],
+  parsedCard: ["Requirement understood", "ज़रूरत समझी गई"],
+  pleaseConfirm: ["Check and confirm before we search", "खोजने से पहले जाँचें और पक्का करें"],
+  confirmAndSearch: ["Confirm and find materials", "पक्का करें और मटीरियल ढूँढें"],
+  notUnderstood: [
+    "We could not read that text. Please use the form instead.",
+    "यह टेक्स्ट समझ नहीं आया। कृपया फ़ॉर्म इस्तेमाल करें।",
+  ],
+  missingInfo: ["Please complete these", "ये जानकारी पूरी करें"],
+  noMatch: ["No material in the catalogue matches this specification", "इस स्पेसिफिकेशन से मेल खाता कोई मटीरियल नहीं मिला"],
+  sendToSuppliers: ["Send requirement for supplier quotes", "सप्लायर कोटेशन के लिए माँग भेजें"],
+  requirementSent: ["Requirement sent to material suppliers", "माँग मटीरियल सप्लायर को भेजी गई"],
+  whyThisMatch: ["Why this matches", "यह क्यों मेल खाता है"],
+
+  // checkout
+  checkout: ["Checkout", "चेकआउट"],
+  deliveryAddress: ["Delivery address", "डिलीवरी पता"],
+  purchaseRoute: ["Purchasing route", "खरीद का तरीका"],
+  paymentMethod: ["Payment method", "पेमेंट का तरीका"],
+  payNowSim: ["Pay now — simulated", "अभी भुगतान — सिम्युलेटेड"],
+  useCredit: ["Use approved sourcing credit — simulated", "मंज़ूर सोर्सिंग क्रेडिट — सिम्युलेटेड"],
+  creditTerms: ["Credit terms", "क्रेडिट शर्तें"],
+  amountFinanced: ["Amount to be financed", "वित्तपोषित रकम"],
+  availableLimit: ["Available limit", "उपलब्ध सीमा"],
+  repaymentPeriod: ["Repayment period", "चुकाने की अवधि"],
+  deductionPct: ["Settlement deduction", "सेटलमेंट कटौती"],
+  charges: ["Charges", "शुल्क"],
+  deadlineHandling: ["If the deadline passes", "समय-सीमा निकलने पर"],
+  deadlineBody: [
+    "The remaining balance stays due and is shown on the Payments screen with a repay action. No penalty is modelled in this prototype.",
+    "बची हुई रकम देय रहती है और पेमेंट स्क्रीन पर चुकाने के विकल्प के साथ दिखती है। इस प्रोटोटाइप में कोई जुर्माना नहीं है।",
+  ],
+  ackCredit: [
+    "I understand these are illustrative demo terms, not a lending offer.",
+    "मैं समझता/समझती हूँ कि ये सिर्फ़ डेमो शर्तें हैं, कोई ऋण प्रस्ताव नहीं।",
+  ],
+  placeOrder: ["Place order", "ऑर्डर करें"],
+  insufficientCredit: [
+    "Available credit is lower than this order. Pay now, or reduce the quantity.",
+    "उपलब्ध क्रेडिट इस ऑर्डर से कम है। अभी भुगतान करें या मात्रा घटाएँ।",
+  ],
+  outOfRange: [
+    "This quantity is outside the quoted range. Request a fresh quote.",
+    "यह मात्रा कोटेशन की सीमा से बाहर है। नया कोटेशन माँगें।",
+  ],
+  orderPlaced: ["Order placed", "ऑर्डर हो गया"],
+  orderId: ["Order ID", "ऑर्डर आईडी"],
+  whatNext: ["What happens next", "आगे क्या होगा"],
+  trackOrder: ["Track order", "ऑर्डर ट्रैक करें"],
+  estimatedArrival: ["Estimated arrival", "अनुमानित पहुँच"],
+
+  // orders
+  customerOrders: ["Customer orders", "ग्राहक ऑर्डर"],
+  sourcingOrders: ["Sourcing orders", "सोर्सिंग ऑर्डर"],
+  customerOrdersNote: ["Finished goods sold by your business", "आपके व्यवसाय द्वारा बेचा गया तैयार सामान"],
+  sourcingOrdersNote: ["Raw materials your business buys", "आपके व्यवसाय द्वारा खरीदा गया कच्चा माल"],
+  stage_awaiting_batch: ["Awaiting batch confirmation", "बैच पक्का होने का इंतज़ार"],
+  stage_confirmed: ["Confirmed", "पक्का हुआ"],
+  stage_preparation: ["Material preparation", "माल तैयार हो रहा है"],
+  stage_quality_check: ["Quality check", "क्वालिटी जाँच"],
+  stage_dispatched: ["Dispatched", "भेज दिया"],
+  stage_delivered: ["Delivered", "पहुँच गया"],
+  stage_received: ["Received", "प्राप्त"],
+  stage_expired_refunded: ["Batch expired — refunded", "बैच समाप्त — वापसी हुई"],
+  confirmReceived: ["Confirm received", "मिलना पक्का करें"],
+  reportIssue: ["Report shortage or quality issue", "कमी या क्वालिटी समस्या बताएँ"],
+  reorder: ["Reorder this specification", "यही स्पेसिफिकेशन दोबारा मँगाएँ"],
+  issueType: ["Issue type", "समस्या का प्रकार"],
+  affectedQty: ["Affected quantity", "प्रभावित मात्रा"],
+  description: ["Description", "विवरण"],
+  attachPhoto: ["Attach a photo (optional)", "फ़ोटो जोड़ें (वैकल्पिक)"],
+  ticketCreated: ["Ticket created", "टिकट बन गया"],
+  reorderNote: [
+    "Prices change. Please reconfirm the current quote before ordering again.",
+    "दाम बदलते हैं। दोबारा ऑर्डर से पहले मौजूदा कोटेशन दोबारा पक्का करें।",
+  ],
+
+  // payments
+  salesSettlements: ["Sales settlements", "बिक्री सेटलमेंट"],
+  sourcingCredit: ["Sourcing credit", "सोर्सिंग क्रेडिट"],
+  available: ["Available", "उपलब्ध"],
+  reserved: ["Reserved", "रोकी गई"],
+  outstanding: ["Outstanding", "बकाया"],
+  repaid: ["Repaid", "चुकाया"],
+  due: ["Due", "देय तिथि"],
+  creditLimit: ["Approved limit", "मंज़ूर सीमा"],
+  repayNow: ["Repay now — simulated", "अभी चुकाएँ — सिम्युलेटेड"],
+  ledger: ["Settlement ledger", "सेटलमेंट बहीखाता"],
+  noSettlements: ["No settlements yet. Use Demo controls to simulate one.", "अभी कोई सेटलमेंट नहीं। डेमो कंट्रोल से बनाएँ।"],
+
+  // account / demo
+  role: ["Role", "भूमिका"],
+  roleSeller: ["Seller", "सेलर"],
+  roleSupplier: ["Material supplier", "मटीरियल सप्लायर"],
+  language: ["Language", "भाषा"],
+  demoControls: ["Demo controls", "डेमो कंट्रोल"],
+  aboutConcept: ["About this concept", "इस कॉन्सेप्ट के बारे में"],
+  advanceFulfilment: ["Advance fulfilment", "फ़ुलफ़िलमेंट आगे बढ़ाएँ"],
+  receiveSample: ["Receive sample", "सैंपल पहुँचाएँ"],
+  expireBatch: ["Expire an unfilled batch", "अधूरा बैच समाप्त करें"],
+  simulateSettlement: ["Simulate a sales settlement", "बिक्री सेटलमेंट सिम्युलेट करें"],
+  advanceDate: ["Advance demo date", "डेमो तारीख़ बढ़ाएँ"],
+  resetDemo: ["Reset all demo data", "सारा डेमो डेटा रीसेट करें"],
+  resetConfirm: ["Reset the prototype to its seeded state?", "प्रोटोटाइप को शुरुआती स्थिति में लाएँ?"],
+  demoDate: ["Demo date", "डेमो तारीख़"],
+  guidedJourney: ["Guided journey", "गाइडेड यात्रा"],
+  step: ["Step", "चरण"],
+  next: ["Next", "अगला"],
+  skip: ["Skip", "छोड़ें"],
+  exitTour: ["Exit tour", "टूर बंद करें"],
+  openScreen: ["Open this screen", "यह स्क्रीन खोलें"],
+
+  // supplier
+  supplierHome: ["Supplier home", "सप्लायर होम"],
+  relevantDemand: ["Relevant demand", "आपके लिए माँग"],
+  quotesAwaiting: ["Quotes awaiting your decision", "आपके फ़ैसले का इंतज़ार"],
+  confirmedPOs: ["Confirmed purchase orders", "पक्के परचेज़ ऑर्डर"],
+  dispatchTasks: ["Dispatch tasks", "डिस्पैच काम"],
+  combinedQty: ["Combined quantity", "कुल मात्रा"],
+  participatingBusinesses: ["Participating businesses", "शामिल व्यवसाय"],
+  destinations: ["Destinations", "गंतव्य"],
+  requiredDates: ["Required dates", "ज़रूरी तारीख़ें"],
+  sendQuote: ["Send quote", "कोटेशन भेजें"],
+  unitPrice: ["Unit price", "प्रति यूनिट दाम"],
+  capacity: ["Capacity", "क्षमता"],
+  leadTime: ["Lead time (days)", "लीड टाइम (दिन)"],
+  quoteExpiry: ["Quote valid until", "कोटेशन मान्य"],
+  dispatchLocation: ["Dispatch location", "डिस्पैच स्थान"],
+  sampleAvailable: ["Sample available", "सैंपल उपलब्ध"],
+  acknowledgeOrder: ["Acknowledge order", "ऑर्डर स्वीकारें"],
+  preparation: ["Preparation", "तैयारी"],
+  submitDispatch: ["Submit dispatch reference", "डिस्पैच रेफ़रेंस दें"],
+  purchaser: ["Purchaser", "खरीदार"],
+  allocations: ["Seller allocations", "सेलर आवंटन"],
+  paymentStatus: ["Payment status", "पेमेंट स्थिति"],
+  minQty: ["Minimum quantity", "न्यूनतम मात्रा"],
+
+  // glossary
+  gsmHelp: ["GSM is fabric weight in grams per square metre.", "GSM कपड़े का वज़न है — ग्राम प्रति वर्ग मीटर।"],
+  thresholdHelp: [
+    "The batch threshold is the combined quantity needed before the batch price applies.",
+    "बैच थ्रेशोल्ड वह कुल मात्रा है जिसके बाद बैच दाम लागू होता है।",
+  ],
+  eligibleHelp: [
+    "An eligible settlement is a positive net sales payout from your Meesho sales.",
+    "योग्य सेटलमेंट आपकी मीशो बिक्री से मिलने वाली सकारात्मक शुद्ध रकम है।",
+  ],
+};
+
+export function makeT(lang: Lang) {
+  return (key: keyof typeof D | string): string => {
+    const entry = D[key as string];
+    if (!entry) return key as string;
+    return lang === "hi" ? entry[1] : entry[0];
+  };
+}
+
+export type TFunc = ReturnType<typeof makeT>;
