@@ -147,15 +147,27 @@ function ProductScreen() {
         </div>
       }
     >
-      <MaterialTile swatch={product.image} label={product.nameEn} className="h-48 w-full rounded-none" />
+      <div className="relative">
+        <MaterialTile swatch={product.image} label={product.nameEn} className="mx-auto aspect-square max-h-72 w-full rounded-none" />
+        <span className="absolute bottom-2 right-2 rounded-md bg-card/90 px-2 py-0.5 text-[10px] text-muted-foreground">
+          {lang === "hi" ? "चित्र सांकेतिक है" : "Illustrative image"}
+        </span>
+      </div>
 
       <div className="space-y-3 px-4 pt-3">
         <div>
           <h2 className="text-base font-bold text-foreground">
             {lang === "hi" ? product.nameHi : product.nameEn}
           </h2>
-          <p className="text-xs text-muted-foreground">
-            {t("manufacturer")}: {supplier.name} · {t("shipsFrom")} {supplier.city}
+          <ul className="mt-1.5 flex flex-wrap gap-1" aria-label={t("specifications")}>
+            {product.specs.slice(0, 4).map((sp) => (
+              <li key={sp.key} className="rounded-md border border-border px-2 py-0.5 text-[11px] text-foreground">
+                {sp.value}
+              </li>
+            ))}
+          </ul>
+          <p className="mt-1.5 text-xs text-muted-foreground">
+            {t("manufacturer")}: {supplier.name} · {t("shipsFrom")} {supplier.city}, {supplier.state}
           </p>
           <div className="mt-1.5 flex flex-wrap gap-1">
             <Pill tone="brand">{t("soldByMeesho")}</Pill>
@@ -268,12 +280,42 @@ function ProductScreen() {
         {batch ? (
           <Card>
             <BatchProgress batch={batch} />
-            <p className="mt-2 text-[11px] text-muted-foreground">{t("batchExplain")}</p>
-            <p className="num mt-1 text-[11px] text-muted-foreground">
-              {t("batchClosesOn")} {formatDate(batch.expiresAt, lang)} ·{" "}
-              {batch.status !== "open" ? t(`stage_${batch.status === "confirmed" ? "confirmed" : "expired_refunded"}`) : ""}
+            {batchOpen && route === "batch" ? (
+              <div className="mt-2 rounded-lg bg-primary-soft p-2.5">
+                <div className="flex h-3 w-full overflow-hidden rounded-full bg-card" aria-hidden>
+                  <div className="h-full bg-primary/60" style={{ width: `${(batch.committedQty / batch.thresholdQty) * 100}%` }} />
+                  <div
+                    className="h-full bg-positive"
+                    style={{ width: `${(Math.min(qty, batch.thresholdQty) / batch.thresholdQty) * 100}%` }}
+                  />
+                </div>
+                <p className="mt-1 flex justify-between text-[10px] text-muted-foreground">
+                  <span>{lang === "hi" ? "दूसरे व्यवसाय" : "Other businesses"}: {batch.committedQty} {product.unit}</span>
+                  <span className="font-semibold text-positive">{lang === "hi" ? "आपका हिस्सा" : "Your share"}: {qty} {product.unit}</span>
+                </p>
+                <p className="mt-1.5 text-xs text-foreground">
+                  {qty >= remaining
+                    ? lang === "hi"
+                      ? `${batch.participants} व्यवसायों ने ${batch.committedQty} ${product.unit} तय किया है। आपके ${qty} ${product.unit} से ${batch.thresholdQty.toLocaleString("en-IN")} ${product.unit} का बैच पूरा होता है। हर व्यवसाय को अपनी मात्रा मिलती है।`
+                      : `${batch.participants} businesses have committed ${batch.committedQty} ${product.unit}. Your ${qty} ${product.unit} completes the ${batch.thresholdQty.toLocaleString("en-IN")} ${product.unit} batch. Each business receives its own quantity.`
+                    : lang === "hi"
+                      ? `${batch.participants} व्यवसायों ने ${batch.committedQty} ${product.unit} तय किया है। आपके ${qty} ${product.unit} के बाद भी ${remaining - qty} ${product.unit} बाकी रहेंगे। सीमा पूरी न होने पर रकम लौटा दी जाती है।`
+                      : `${batch.participants} businesses have committed ${batch.committedQty} ${product.unit}. After your ${qty} ${product.unit}, ${remaining - qty} ${product.unit} would still be needed. If the threshold isn't reached, you're refunded.`}
+                </p>
+              </div>
+            ) : null}
+            <p className="num mt-2 text-[11px] text-muted-foreground">
+              {batchOpen
+                ? `${lang === "hi" ? "बंद होगा" : "Closes"} ${formatDate(batch.expiresAt, lang)}`
+                : t(`stage_${batch.status === "confirmed" ? "confirmed" : "expired_refunded"}`)}
             </p>
-            <Note>{t("thresholdHelp")}</Note>
+            <details className="mt-1">
+              <summary className="cursor-pointer text-[11px] font-semibold text-primary">
+                {lang === "hi" ? "बैच कैसे काम करता है" : "How batches work"}
+              </summary>
+              <p className="mt-1 text-[11px] text-muted-foreground">{t("batchExplain")}</p>
+              <Note>{t("thresholdHelp")}</Note>
+            </details>
           </Card>
         ) : null}
 
