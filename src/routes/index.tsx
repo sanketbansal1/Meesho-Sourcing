@@ -68,7 +68,7 @@ function HomeScreen() {
     <Screen
       title="Meesho Sourcing"
       subtitle={`${SELLER.business} · ${SELLER.city}`}
-      right={<Pill tone="brand">{t("conceptDemo")}</Pill>}
+      right={<Pill tone="brand" className="px-1.5 text-[10px]">{t("conceptDemo")}</Pill>}
     >
       <div className="min-h-full space-y-5 bg-surface px-4 pb-4 pt-4">
         {/* B. Greeting + summary */}

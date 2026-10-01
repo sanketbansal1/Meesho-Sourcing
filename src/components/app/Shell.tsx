@@ -81,7 +81,7 @@ export function AppHeader({
           <span aria-hidden className="h-6 w-1 shrink-0 rounded-full bg-primary" />
         )}
         <div className="min-w-0">
-          <h1 className="truncate text-base font-bold text-foreground">{title}</h1>
+          <h1 className="truncate text-[15px] font-bold text-foreground">{title}</h1>
           {subtitle ? <p className="truncate text-[11px] text-muted-foreground">{subtitle}</p> : null}
         </div>
         <div className="flex shrink-0 items-center gap-0.5">
