@@ -36,18 +36,26 @@ export const Route = createFileRoute("/sourcing/product/$productId")({
       },
     ],
   }),
+  validateSearch: (search: Record<string, unknown>): { route?: "batch" | "buynow" } =>
+    search.route === "batch" || search.route === "buynow" ? { route: search.route } : {},
   component: ProductScreen,
 });
 
 function ProductScreen() {
   const { productId } = Route.useParams();
+  const { route: wanted } = Route.useSearch();
   const { s, t, lang } = useApp();
   const navigate = useNavigate();
   const product = getProduct(productId);
   const batch = s.batches.find((b) => b.id === product?.batchId);
   const batchOpen = batch?.status === "open";
-  const [route, setRoute] = useState<"batch" | "buynow">(batchOpen ? "batch" : "buynow");
-  const [qty, setQty] = useState(() => (batchOpen ? 100 : (product?.buyNow?.minQty ?? 100)));
+  const initialRoute: "batch" | "buynow" =
+    wanted === "buynow" && product?.buyNow ? "buynow" : batchOpen ? "batch" : "buynow";
+  const [route, setRoute] = useState<"batch" | "buynow">(initialRoute);
+  const [qty, setQty] = useState(() =>
+    initialRoute === "batch" ? 100 : (product?.buyNow?.minQty ?? 100),
+  );
+  const [localQuote, setLocalQuote] = useState(() => String((product?.localQuotePaise ?? 0) / 100));
   const [badgeOpen, setBadgeOpen] = useState(false);
 
   if (!product) {
@@ -76,8 +84,9 @@ function ProductScreen() {
   const sample = s.samples.find((x) => x.productId === product.id);
   const sampleApproved = sample?.status === "approved";
   const needsSample = Boolean(product.requiresSampleApproval) && !sampleApproved;
-  const saving =
-    pricing && product.localQuotePaise ? savingsVsLocal(pricing, product.localQuotePaise) : null;
+  const localPaise = Math.round((Number(localQuote) || 0) * 100);
+  const saving = pricing && product.localQuotePaise && localPaise > 0 ? savingsVsLocal(pricing, localPaise) : null;
+  const remaining = batch ? Math.max(0, batch.thresholdQty - batch.committedQty) : 0;
 
   const options = product.alternatives
     ? [
@@ -138,15 +147,27 @@ function ProductScreen() {
         </div>
       }
     >
-      <MaterialTile swatch={product.image} label={product.nameEn} className="h-48 w-full rounded-none" />
+      <div className="relative">
+        <MaterialTile swatch={product.image} label={product.nameEn} className="mx-auto aspect-square max-h-72 w-full rounded-none" />
+        <span className="absolute bottom-2 right-2 rounded-md bg-card/90 px-2 py-0.5 text-[10px] text-muted-foreground">
+          {lang === "hi" ? "चित्र सांकेतिक है" : "Illustrative image"}
+        </span>
+      </div>
 
       <div className="space-y-3 px-4 pt-3">
         <div>
           <h2 className="text-base font-bold text-foreground">
             {lang === "hi" ? product.nameHi : product.nameEn}
           </h2>
-          <p className="text-xs text-muted-foreground">
-            {t("manufacturer")}: {supplier.name} · {t("shipsFrom")} {supplier.city}
+          <ul className="mt-1.5 flex flex-wrap gap-1" aria-label={t("specifications")}>
+            {product.specs.slice(0, 4).map((sp) => (
+              <li key={sp.key} className="rounded-md border border-border px-2 py-0.5 text-[11px] text-foreground">
+                {sp.value}
+              </li>
+            ))}
+          </ul>
+          <p className="mt-1.5 text-xs text-muted-foreground">
+            {t("manufacturer")}: {supplier.name} · {t("shipsFrom")} {supplier.city}, {supplier.state}
           </p>
           <div className="mt-1.5 flex flex-wrap gap-1">
             <Pill tone="brand">{t("soldByMeesho")}</Pill>
@@ -259,12 +280,42 @@ function ProductScreen() {
         {batch ? (
           <Card>
             <BatchProgress batch={batch} />
-            <p className="mt-2 text-[11px] text-muted-foreground">{t("batchExplain")}</p>
-            <p className="num mt-1 text-[11px] text-muted-foreground">
-              {t("batchClosesOn")} {formatDate(batch.expiresAt, lang)} ·{" "}
-              {batch.status !== "open" ? t(`stage_${batch.status === "confirmed" ? "confirmed" : "expired_refunded"}`) : ""}
+            {batchOpen && route === "batch" ? (
+              <div className="mt-2 rounded-lg bg-primary-soft p-2.5">
+                <div className="flex h-3 w-full overflow-hidden rounded-full bg-card" aria-hidden>
+                  <div className="h-full bg-primary/60" style={{ width: `${(batch.committedQty / batch.thresholdQty) * 100}%` }} />
+                  <div
+                    className="h-full bg-positive"
+                    style={{ width: `${(Math.min(qty, batch.thresholdQty) / batch.thresholdQty) * 100}%` }}
+                  />
+                </div>
+                <p className="mt-1 flex justify-between text-[10px] text-muted-foreground">
+                  <span>{lang === "hi" ? "दूसरे व्यवसाय" : "Other businesses"}: {batch.committedQty} {product.unit}</span>
+                  <span className="font-semibold text-positive">{lang === "hi" ? "आपका हिस्सा" : "Your share"}: {qty} {product.unit}</span>
+                </p>
+                <p className="mt-1.5 text-xs text-foreground">
+                  {qty >= remaining
+                    ? lang === "hi"
+                      ? `${batch.participants} व्यवसायों ने ${batch.committedQty} ${product.unit} तय किया है। आपके ${qty} ${product.unit} से ${batch.thresholdQty.toLocaleString("en-IN")} ${product.unit} का बैच पूरा होता है। हर व्यवसाय को अपनी मात्रा मिलती है।`
+                      : `${batch.participants} businesses have committed ${batch.committedQty} ${product.unit}. Your ${qty} ${product.unit} completes the ${batch.thresholdQty.toLocaleString("en-IN")} ${product.unit} batch. Each business receives its own quantity.`
+                    : lang === "hi"
+                      ? `${batch.participants} व्यवसायों ने ${batch.committedQty} ${product.unit} तय किया है। आपके ${qty} ${product.unit} के बाद भी ${remaining - qty} ${product.unit} बाकी रहेंगे। सीमा पूरी न होने पर रकम लौटा दी जाती है।`
+                      : `${batch.participants} businesses have committed ${batch.committedQty} ${product.unit}. After your ${qty} ${product.unit}, ${remaining - qty} ${product.unit} would still be needed. If the threshold isn't reached, you're refunded.`}
+                </p>
+              </div>
+            ) : null}
+            <p className="num mt-2 text-[11px] text-muted-foreground">
+              {batchOpen
+                ? `${lang === "hi" ? "बंद होगा" : "Closes"} ${formatDate(batch.expiresAt, lang)}`
+                : t(`stage_${batch.status === "confirmed" ? "confirmed" : "expired_refunded"}`)}
             </p>
-            <Note>{t("thresholdHelp")}</Note>
+            <details className="mt-1">
+              <summary className="cursor-pointer text-[11px] font-semibold text-primary">
+                {lang === "hi" ? "बैच कैसे काम करता है" : "How batches work"}
+              </summary>
+              <p className="mt-1 text-[11px] text-muted-foreground">{t("batchExplain")}</p>
+              <Note>{t("thresholdHelp")}</Note>
+            </details>
           </Card>
         ) : null}
 
@@ -296,54 +347,91 @@ function ProductScreen() {
         ) : null}
       </div>
 
-      <SectionTitle>{t("specifications")}</SectionTitle>
-      <div className="px-4">
-        <Card>
-          {product.specs.map((sp) => (
-            <Row key={sp.key} label={lang === "hi" ? sp.labelHi : sp.labelEn} value={sp.value} />
-          ))}
-          {product.match.gsm ? <Note>{t("gsmHelp")}</Note> : null}
-        </Card>
-      </div>
-
       {options.length ? (
         <>
           <SectionTitle>{t("compareOptions")}</SectionTitle>
           <div className="space-y-2 px-4">
-            <Note>{t("compareHint")}</Note>
-            {options.map((o) => {
-              const delivered = o.unit * qty + o.delivery;
-              return (
-                <Card key={o.id}>
+            <p className="text-[11px] text-muted-foreground">
+              {lang === "hi"
+                ? `समान स्पेसिफ़िकेशन, ${qty} ${product.unit}, टैक्स से पहले डिलीवर्ड लागत।`
+                : `Same specification, ${qty} ${product.unit}, delivered cost before tax.`}
+            </p>
+            {(() => {
+              const rows = options.map((o) => {
+                const isLocal = o.id === "alt-delhi";
+                const unit = isLocal ? localPaise : o.unit;
+                return { ...o, isLocal, unit, delivered: unit * qty + o.delivery };
+              });
+              const platform = rows.filter((r) => !r.isLocal);
+              const minAll = Math.min(...rows.map((r) => r.delivered));
+              const minLead = Math.min(...rows.map((r) => r.lead));
+              void platform;
+              return rows.map((o) => (
+                <div
+                  key={o.id}
+                  className={
+                    o.isLocal
+                      ? "rounded-xl border border-dashed border-border bg-secondary p-3"
+                      : "rounded-xl border border-border bg-card p-3 shadow-app"
+                  }
+                >
                   <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-2">
                     <div className="min-w-0">
-                      <p className="truncate text-xs font-bold text-foreground">{o.name}</p>
+                      <p className="truncate text-xs font-bold text-foreground">
+                        {o.isLocal ? (lang === "hi" ? "आपका लोकल रेट (संदर्भ)" : "Your local quote (reference)") : o.name}
+                      </p>
                       <p className="text-[11px] text-muted-foreground">
-                        {t("shipsFrom")} {o.city} · {o.lead} {lang === "hi" ? "दिन" : "days"}
+                        {o.city} · {o.lead} {lang === "hi" ? "दिन" : "days"} · {perUnit(o.unit, product.unit)} +{" "}
+                        {rupees(o.delivery)}
                       </p>
                     </div>
-                    <div className="shrink-0 text-right">
-                      <p className="num text-xs font-semibold text-foreground">
-                        {perUnit(o.unit, product.unit)}
-                      </p>
-                      <p className="num text-[11px] text-muted-foreground">
-                        + {rupees(o.delivery)} {t("delivery").toLowerCase()}
-                      </p>
-                    </div>
+                    <p className="num shrink-0 text-right text-sm font-bold text-foreground">{rupees(o.delivered)}</p>
                   </div>
-                  <Row label={t("preTaxDelivered")} value={rupees(delivered)} strong />
-                  <p className="text-[11px] text-muted-foreground">{lang === "hi" ? o.noteHi : o.noteEn}</p>
-                </Card>
-              );
-            })}
-            <Note>
-              {lang === "hi"
-                ? "लोकल रेट आपका दर्ज किया डेमो आँकड़ा है — स्वतंत्र रूप से सत्यापित बाज़ार भाव नहीं।"
-                : "The local figure is your entered demo quote — not an independently verified market price."}
-            </Note>
+                  <div className="mt-1 flex flex-wrap gap-1">
+                    {o.delivered === minAll ? (
+                      <Pill tone="positive">{lang === "hi" ? "सबसे कम डिलीवर्ड लागत" : "Lowest delivered cost"}</Pill>
+                    ) : null}
+                    {o.lead === minLead ? (
+                      <Pill tone="neutral">{lang === "hi" ? "सबसे तेज़ डिलीवरी" : "Fastest delivery"}</Pill>
+                    ) : null}
+                    {o.isLocal ? (
+                      <Pill tone="warning">{lang === "hi" ? "सत्यापित ऑफ़र नहीं" : "Not a platform offer"}</Pill>
+                    ) : null}
+                  </div>
+                  {o.isLocal ? (
+                    <div className="mt-2 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
+                      <label htmlFor="local-quote" className="text-[11px] text-muted-foreground">
+                        {lang === "hi" ? `आपका रेट (₹/${product.unit}, डिलीवरी सहित)` : `Your rate (₹/${product.unit}, delivered)`}
+                      </label>
+                      <input
+                        id="local-quote"
+                        inputMode="numeric"
+                        value={localQuote}
+                        onChange={(e) => setLocalQuote(e.target.value.replace(/\D/g, "").slice(0, 5))}
+                        className="tap w-20 rounded-lg border border-input bg-card px-2 text-right text-sm"
+                      />
+                    </div>
+                  ) : (
+                    <p className="mt-1 text-[11px] text-muted-foreground">{lang === "hi" ? o.noteHi : o.noteEn}</p>
+                  )}
+                </div>
+              ));
+            })()}
           </div>
         </>
       ) : null}
+
+      <div className="px-4 pt-3">
+        <details className="rounded-xl border border-border bg-card p-3">
+          <summary className="cursor-pointer text-sm font-bold text-foreground">{t("specifications")}</summary>
+          <div className="mt-2">
+            {product.specs.map((sp) => (
+              <Row key={sp.key} label={lang === "hi" ? sp.labelHi : sp.labelEn} value={sp.value} />
+            ))}
+            {product.match.gsm ? <Note>{t("gsmHelp")}</Note> : null}
+          </div>
+        </details>
+      </div>
 
       <div className="h-6" />
 

@@ -188,7 +188,19 @@ function CheckoutScreen() {
 
         {payment === "credit" ? (
           <Card>
-            <p className="text-xs font-bold text-foreground">{t("creditTerms")}</p>
+            <p className="rounded-lg bg-primary-soft p-2 text-xs font-semibold text-foreground">
+              {lang === "hi"
+                ? `इस डेमो में अभी ₹0 देय। ऑर्डर पक्का होने पर ${rupees(pricing.totalPaise)} आपके सोर्सिंग क्रेडिट में जुड़ेगा।`
+                : `₹0 payable now in this demo. ${rupees(pricing.totalPaise)} added to your sourcing credit when the order confirms.`}
+              {route === "batch" ? (
+                <span className="mt-1 block font-normal text-muted-foreground">
+                  {lang === "hi"
+                    ? "बैच पूरा होने तक यह रकम सिर्फ़ रिज़र्व रहती है — बकाया नहीं बनती। बैच न भरे तो रिज़र्व हट जाता है।"
+                    : "Until the batch confirms, this amount is only reserved from your limit — it is not outstanding debt. If the batch doesn't fill, the reservation is released."}
+                </span>
+              ) : null}
+            </p>
+            <p className="mt-2 text-xs font-bold text-foreground">{t("creditTerms")}</p>
             <Row label={t("amountFinanced")} value={rupees(pricing.totalPaise)} />
             <Row label={t("availableLimit")} value={rupees(available)} />
             <Row label={t("repaymentPeriod")} value={lang === "hi" ? "30 दिन" : "30 days"} />

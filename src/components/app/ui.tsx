@@ -1,5 +1,10 @@
 import { cva, type VariantProps } from "class-variance-authority";
+import { Anchor, Box, CircleDot, Layers, Link2, type LucideIcon, Ribbon, Shirt, Spool, Tag } from "lucide-react";
 import type { ButtonHTMLAttributes, InputHTMLAttributes, ReactNode, SelectHTMLAttributes } from "react";
+import bagImg from "@/assets/courier-bags-grey.webp.asset.json";
+import fabricImg from "@/assets/fabric-jersey-black.webp.asset.json";
+import jewelImg from "@/assets/jewellery-components.webp.asset.json";
+import zipImg from "@/assets/zipper-black.webp.asset.json";
 import { cn } from "@/lib/utils";
 
 export const buttonVariants = cva(
@@ -234,6 +239,29 @@ export function Note({ children, tone = "muted" }: { children: ReactNode; tone?:
   );
 }
 
+const PHOTOS: Record<string, string> = {
+  "sw-jersey-black": fabricImg.url,
+  "sw-fabric": fabricImg.url,
+  "sw-zip": zipImg.url,
+  "sw-trim": zipImg.url,
+  "sw-bag": bagImg.url,
+  "sw-pack": bagImg.url,
+  "sw-jewel": jewelImg.url,
+};
+
+/** Honest category illustrations for SKUs without a matching photo. */
+const ILLUSTRATIONS: Record<string, { icon: LucideIcon; tone: string }> = {
+  "sw-woven": { icon: Shirt, tone: "ill-cream" },
+  "sw-lining": { icon: Layers, tone: "ill-grey" },
+  "sw-elastic": { icon: Ribbon, tone: "ill-cream" },
+  "sw-thread": { icon: Spool, tone: "ill-dark" },
+  "sw-box": { icon: Box, tone: "ill-kraft" },
+  "sw-label": { icon: Tag, tone: "ill-cream" },
+  "sw-beads": { icon: CircleDot, tone: "ill-rose" },
+  "sw-chain": { icon: Link2, tone: "ill-gold" },
+  "sw-clasp": { icon: Anchor, tone: "ill-gold" },
+};
+
 export function MaterialTile({
   swatch,
   className,
@@ -243,12 +271,30 @@ export function MaterialTile({
   className?: string;
   label: string;
 }) {
+  const photo = PHOTOS[swatch];
+  if (photo) {
+    return (
+      <div className={cn("overflow-hidden rounded-lg bg-warm", className)}>
+        <img
+          src={photo}
+          alt={`${label} (illustrative image)`}
+          loading="lazy"
+          decoding="async"
+          className="h-full w-full object-contain p-1"
+        />
+      </div>
+    );
+  }
+  const ill = ILLUSTRATIONS[swatch] ?? { icon: Box, tone: "ill-cream" };
+  const Icon = ill.icon;
   return (
     <div
       role="img"
-      aria-label={label}
-      className={cn("mat rounded-lg", `mat-${swatch}`, className)}
-    />
+      aria-label={`${label} (illustration)`}
+      className={cn("grid place-items-center rounded-lg", ill.tone, className)}
+    >
+      <Icon className="h-1/3 max-h-16 w-1/3 max-w-16" strokeWidth={1.5} aria-hidden />
+    </div>
   );
 }
 

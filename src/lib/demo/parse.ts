@@ -99,10 +99,13 @@ export function parseRequirement(input: string): ParsedRequirement {
       out.material = m.label;
       out.categoryId = m.categoryId;
       out.matchedProductId = m.productId;
-      out.composition = m.composition;
       break;
     }
   }
+  // Composition is only recorded when the buyer states it explicitly — "cotton" alone is a material family.
+  const pct = text.match(/(\d{2,3})\s*%\s*(cotton|polyester|viscose|कॉटन)/);
+  if (pct) out.composition = `${pct[1]}% ${pct[2] === "कॉटन" ? "cotton" : pct[2]}`;
+  else if (/\bblend\b|ब्लेंड/.test(text)) out.composition = "Blend (ratio to confirm)";
 
   for (const c of COLOURS) {
     if (c.keys.some((k) => text.includes(k))) {
@@ -152,23 +155,50 @@ export function findMatches(
       const reasonsHi: string[] = [];
       let score = 0;
       if (parsed.matchedProductId === p.id) score += 3;
-      if (parsed.gsm && p.match.gsm === parsed.gsm) {
-        score += 1;
-        reasonsEn.push(`${parsed.gsm} GSM matches`);
-        reasonsHi.push(`${parsed.gsm} GSM मेल खाता है`);
+      let specOk = true;
+      if (parsed.gsm && p.match.gsm) {
+        if (p.match.gsm === parsed.gsm) {
+          score += 1;
+          reasonsEn.push(`Specification: ${parsed.gsm} GSM matches`);
+          reasonsHi.push(`स्पेसिफ़िकेशन: ${parsed.gsm} GSM मेल खाता है`);
+        } else {
+          specOk = false;
+          reasonsEn.push(`Rejected: ${p.match.gsm} GSM ≠ requested ${parsed.gsm} GSM`);
+          reasonsHi.push(`अस्वीकृत: ${p.match.gsm} GSM, माँगा ${parsed.gsm} GSM`);
+        }
       }
-      if (parsed.widthIn && p.match.widthIn === parsed.widthIn) {
-        score += 1;
-        reasonsEn.push(`${parsed.widthIn}" width matches`);
-        reasonsHi.push(`${parsed.widthIn}" चौड़ाई मेल खाती है`);
+      if (parsed.widthIn && p.match.widthIn) {
+        if (p.match.widthIn === parsed.widthIn) {
+          score += 1;
+          reasonsEn.push(`Specification: ${parsed.widthIn}" width matches`);
+          reasonsHi.push(`स्पेसिफ़िकेशन: ${parsed.widthIn}" चौड़ाई मेल खाती है`);
+        } else {
+          specOk = false;
+          reasonsEn.push(`Rejected: width mismatch (${p.match.widthIn}" vs ${parsed.widthIn}")`);
+          reasonsHi.push(`अस्वीकृत: चौड़ाई मेल नहीं (${p.match.widthIn}" बनाम ${parsed.widthIn}")`);
+        }
       }
       if (parsed.colour && p.match.colour === parsed.colour.toLowerCase()) {
         score += 1;
         reasonsEn.push(`${parsed.colour} colour matches`);
         reasonsHi.push(`${parsed.colour} रंग मेल खाता है`);
       }
+      if (parsed.qty && p.buyNow) {
+        const ok = parsed.qty >= p.buyNow.minQty && parsed.qty <= p.buyNow.maxQty;
+        reasonsEn.push(
+          ok
+            ? `Quantity: ${parsed.qty} ${p.unit} fits ${p.buyNow.minQty}–${p.buyNow.maxQty}`
+            : `Quantity: ${parsed.qty} ${p.unit} outside ${p.buyNow.minQty}–${p.buyNow.maxQty}`,
+        );
+        reasonsHi.push(`मात्रा: ${parsed.qty} ${p.unit} (${p.buyNow.minQty}–${p.buyNow.maxQty})`);
+        if (ok) {
+          const delivered = (p.buyNow.unitPricePaise * parsed.qty + p.buyNow.deliveryPaise) / 100;
+          reasonsEn.push(`Delivered cost: ₹${delivered.toLocaleString("en-IN")} before tax (buy now)`);
+          reasonsHi.push(`डिलीवर्ड लागत: ₹${delivered.toLocaleString("en-IN")} टैक्स से पहले`);
+        }
+      }
       const lead = p.buyNow?.leadDays ?? 7;
-      const feasible = parsed.withinDays ? lead <= parsed.withinDays : true;
+      const feasible = specOk && (parsed.withinDays ? lead <= parsed.withinDays : true);
       if (feasible) {
         reasonsEn.push(`Estimated delivery in ${lead} days meets your date`);
         reasonsHi.push(`अनुमानित ${lead} दिन की डिलीवरी आपकी तारीख़ पूरी करती है`);

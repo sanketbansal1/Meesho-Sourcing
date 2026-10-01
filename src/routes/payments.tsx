@@ -87,6 +87,24 @@ function PaymentsScreen() {
               </Button>
             ) : null}
             <Note>{t("eligibleHelp")}</Note>
+            {s.settlementsProcessed.length === 0 ? (
+              <div className="mt-2 rounded-lg border border-dashed border-border p-2.5">
+                <p className="text-[10px] font-bold uppercase tracking-wide text-muted-foreground">
+                  {lang === "hi" ? "उदाहरण — अभी सिम्युलेट नहीं हुआ" : "Example — not yet simulated"}
+                </p>
+                <p className="mt-1 text-xs text-foreground">
+                  {lang === "hi" ? "₹8,000 के योग्य सेटलमेंट पर:" : "On an eligible ₹8,000 settlement:"}
+                </p>
+                <div className="mt-1.5 flex h-3 overflow-hidden rounded-full" aria-hidden>
+                  <div className="w-1/5 bg-primary" />
+                  <div className="w-4/5 bg-positive" />
+                </div>
+                <div className="num mt-1 flex justify-between text-[11px]">
+                  <span className="font-semibold text-primary">₹1,600 {lang === "hi" ? "क्रेडिट चुकाता है" : "repays sourcing credit"}</span>
+                  <span className="font-semibold text-positive">₹6,400 {lang === "hi" ? "आपको मिलता है" : "reaches you"}</span>
+                </div>
+              </div>
+            ) : null}
           </Card>
 
           <SectionTitle>{t("ledger")}</SectionTitle>

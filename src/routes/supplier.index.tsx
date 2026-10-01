@@ -49,16 +49,28 @@ function SupplierHome() {
             </div>
             <Row
               label={t("combinedQty")}
-              value={`${b.committedQty.toLocaleString("en-IN")} / ${b.thresholdQty.toLocaleString("en-IN")}`}
+              value={`${b.committedQty.toLocaleString("en-IN")}/${b.thresholdQty.toLocaleString("en-IN")} ${
+                getProduct(b.productId)?.unit ?? ""
+              }`}
             />
             <Row label={t("participatingBusinesses")} value={String(b.participants)} />
             <Row label={t("quoteExpiry")} value={formatDate(b.expiresAt, lang)} />
+            <Link
+              to="/supplier/demand"
+              className="tap mt-2 flex items-center justify-center rounded-xl bg-primary-soft text-sm font-semibold text-primary"
+            >
+              {lang === "hi" ? "माँग देखें और कोटेशन दें" : "View demand and quote"}
+            </Link>
           </Card>
         ))}
 
-        <SectionTitle>{t("quotesAwaiting")}</SectionTitle>
+        <SectionTitle>{lang === "hi" ? "आपके कोटेशन का इंतज़ार करती माँगें" : "Requests awaiting your quote"}</SectionTitle>
         {s.requirements.filter((r) => r.status === "open").length === 0 ? (
-          <Empty>{t("none")}</Empty>
+          <Empty>
+            {lang === "hi"
+              ? "अभी कोई माँग नहीं। जब कोई विक्रेता अपनी ज़रूरत भेजेगा, वह यहाँ दिखेगी।"
+              : "No requests yet. When a seller sends a custom requirement, it appears here."}
+          </Empty>
         ) : (
           <Link to="/supplier/demand">
             <Card>
@@ -69,10 +81,24 @@ function SupplierHome() {
             </Card>
           </Link>
         )}
+        {s.quotes.length > 0 ? (
+          <>
+            <SectionTitle>{lang === "hi" ? "मीशो समीक्षा के इंतज़ार में कोटेशन" : "Quotes awaiting Meesho review"}</SectionTitle>
+            <Card>
+              <p className="num text-xs font-semibold text-foreground">
+                {s.quotes.length} {lang === "hi" ? "भेजे गए कोटेशन" : "submitted quotes"}
+              </p>
+            </Card>
+          </>
+        ) : null}
 
         <SectionTitle>{t("confirmedPOs")}</SectionTitle>
         {pos.length === 0 ? (
-          <Empty>{t("none")}</Empty>
+          <Empty>
+            {lang === "hi"
+              ? "अभी कोई पक्का खरीद ऑर्डर नहीं। बैच की सीमा पूरी होने पर ऑर्डर यहाँ दिखेंगे।"
+              : "No confirmed purchase orders yet. Orders appear when a batch reaches its threshold."}
+          </Empty>
         ) : (
           pos.map((po) => (
             <Link key={po.id} to="/supplier/po/$poId" params={{ poId: po.id }}>
@@ -98,7 +124,13 @@ function SupplierHome() {
         )}
 
         <SectionTitle>{t("dispatchTasks")}</SectionTitle>
-        {dispatchTasks.length === 0 ? <Empty>{t("none")}</Empty> : null}
+        {dispatchTasks.length === 0 ? (
+          <Empty>
+            {lang === "hi"
+              ? "अभी कोई डिस्पैच काम नहीं। पक्के ऑर्डर से डिस्पैच काम बनेंगे।"
+              : "No dispatch tasks yet. Confirmed orders will create dispatch tasks."}
+          </Empty>
+        ) : null}
         {dispatchTasks.map((po) => (
           <Link key={po.id} to="/supplier/po/$poId" params={{ poId: po.id }}>
             <Card>
