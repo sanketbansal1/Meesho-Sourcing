@@ -10,7 +10,9 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CheckoutProductIdRouteImport } from './routes/checkout.$productId'
 import { Route as SourcingIndexRouteImport } from './routes/sourcing.index'
+import { Route as SourcingRequirementRouteImport } from './routes/sourcing.requirement'
 import { Route as SourcingCategoryCategoryIdRouteImport } from './routes/sourcing.category.$categoryId'
 import { Route as SourcingProductProductIdRouteImport } from './routes/sourcing.product.$productId'
 
@@ -19,9 +21,19 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CheckoutProductIdRoute = CheckoutProductIdRouteImport.update({
+  id: '/checkout/$productId',
+  path: '/checkout/$productId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SourcingIndexRoute = SourcingIndexRouteImport.update({
   id: '/sourcing/',
   path: '/sourcing/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SourcingRequirementRoute = SourcingRequirementRouteImport.update({
+  id: '/sourcing/requirement',
+  path: '/sourcing/requirement',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SourcingCategoryCategoryIdRoute =
@@ -39,12 +51,16 @@ const SourcingProductProductIdRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/checkout/$productId': typeof CheckoutProductIdRoute
+  '/sourcing/requirement': typeof SourcingRequirementRoute
   '/sourcing/': typeof SourcingIndexRoute
   '/sourcing/category/$categoryId': typeof SourcingCategoryCategoryIdRoute
   '/sourcing/product/$productId': typeof SourcingProductProductIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/checkout/$productId': typeof CheckoutProductIdRoute
+  '/sourcing/requirement': typeof SourcingRequirementRoute
   '/sourcing': typeof SourcingIndexRoute
   '/sourcing/category/$categoryId': typeof SourcingCategoryCategoryIdRoute
   '/sourcing/product/$productId': typeof SourcingProductProductIdRoute
@@ -52,6 +68,8 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/checkout/$productId': typeof CheckoutProductIdRoute
+  '/sourcing/requirement': typeof SourcingRequirementRoute
   '/sourcing/': typeof SourcingIndexRoute
   '/sourcing/category/$categoryId': typeof SourcingCategoryCategoryIdRoute
   '/sourcing/product/$productId': typeof SourcingProductProductIdRoute
@@ -60,18 +78,24 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/checkout/$productId'
+    | '/sourcing/requirement'
     | '/sourcing/'
     | '/sourcing/category/$categoryId'
     | '/sourcing/product/$productId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/checkout/$productId'
+    | '/sourcing/requirement'
     | '/sourcing'
     | '/sourcing/category/$categoryId'
     | '/sourcing/product/$productId'
   id:
     | '__root__'
     | '/'
+    | '/checkout/$productId'
+    | '/sourcing/requirement'
     | '/sourcing/'
     | '/sourcing/category/$categoryId'
     | '/sourcing/product/$productId'
@@ -79,6 +103,8 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CheckoutProductIdRoute: typeof CheckoutProductIdRoute
+  SourcingRequirementRoute: typeof SourcingRequirementRoute
   SourcingIndexRoute: typeof SourcingIndexRoute
   SourcingCategoryCategoryIdRoute: typeof SourcingCategoryCategoryIdRoute
   SourcingProductProductIdRoute: typeof SourcingProductProductIdRoute
@@ -93,11 +119,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/checkout/$productId': {
+      id: '/checkout/$productId'
+      path: '/checkout/$productId'
+      fullPath: '/checkout/$productId'
+      preLoaderRoute: typeof CheckoutProductIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sourcing/': {
       id: '/sourcing/'
       path: '/sourcing'
       fullPath: '/sourcing/'
       preLoaderRoute: typeof SourcingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sourcing/requirement': {
+      id: '/sourcing/requirement'
+      path: '/sourcing/requirement'
+      fullPath: '/sourcing/requirement'
+      preLoaderRoute: typeof SourcingRequirementRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sourcing/category/$categoryId': {
@@ -119,6 +159,8 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CheckoutProductIdRoute: CheckoutProductIdRoute,
+  SourcingRequirementRoute: SourcingRequirementRoute,
   SourcingIndexRoute: SourcingIndexRoute,
   SourcingCategoryCategoryIdRoute: SourcingCategoryCategoryIdRoute,
   SourcingProductProductIdRoute: SourcingProductProductIdRoute,
