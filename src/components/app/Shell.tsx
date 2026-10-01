@@ -66,7 +66,6 @@ export function AppHeader({
 }) {
   const router = useRouter();
   const { s, t } = useApp();
-  const role = useRouteRole();
   return (
     <header className="sticky top-0 z-30 border-b border-border bg-card">
       <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 px-3 py-2.5">
