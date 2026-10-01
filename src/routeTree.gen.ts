@@ -20,9 +20,13 @@ import { Route as OrdersOrderIdRouteImport } from './routes/orders.$orderId'
 import { Route as SourcingIndexRouteImport } from './routes/sourcing.index'
 import { Route as SourcingRequirementRouteImport } from './routes/sourcing.requirement'
 import { Route as SupplierIndexRouteImport } from './routes/supplier.index'
+import { Route as SupplierAccountRouteImport } from './routes/supplier.account'
 import { Route as SupplierDemandRouteImport } from './routes/supplier.demand'
+import { Route as SupplierOrdersRouteImport } from './routes/supplier.orders'
+import { Route as SupplierPaymentsRouteImport } from './routes/supplier.payments'
 import { Route as SourcingCategoryCategoryIdRouteImport } from './routes/sourcing.category.$categoryId'
 import { Route as SourcingProductProductIdRouteImport } from './routes/sourcing.product.$productId'
+import { Route as SupplierPoPoIdRouteImport } from './routes/supplier.po.$poId'
 import { Route as SupplierRequirementReqIdRouteImport } from './routes/supplier.requirement.$reqId'
 
 const IndexRoute = IndexRouteImport.update({
@@ -80,9 +84,24 @@ const SupplierIndexRoute = SupplierIndexRouteImport.update({
   path: '/supplier/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SupplierAccountRoute = SupplierAccountRouteImport.update({
+  id: '/supplier/account',
+  path: '/supplier/account',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SupplierDemandRoute = SupplierDemandRouteImport.update({
   id: '/supplier/demand',
   path: '/supplier/demand',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SupplierOrdersRoute = SupplierOrdersRouteImport.update({
+  id: '/supplier/orders',
+  path: '/supplier/orders',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SupplierPaymentsRoute = SupplierPaymentsRouteImport.update({
+  id: '/supplier/payments',
+  path: '/supplier/payments',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SourcingCategoryCategoryIdRoute =
@@ -97,6 +116,11 @@ const SourcingProductProductIdRoute =
     path: '/sourcing/product/$productId',
     getParentRoute: () => rootRouteImport,
   } as any)
+const SupplierPoPoIdRoute = SupplierPoPoIdRouteImport.update({
+  id: '/supplier/po/$poId',
+  path: '/supplier/po/$poId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SupplierRequirementReqIdRoute =
   SupplierRequirementReqIdRouteImport.update({
     id: '/supplier/requirement/$reqId',
@@ -113,12 +137,16 @@ export interface FileRoutesByFullPath {
   '/checkout/$productId': typeof CheckoutProductIdRoute
   '/orders/$orderId': typeof OrdersOrderIdRoute
   '/sourcing/requirement': typeof SourcingRequirementRoute
+  '/supplier/account': typeof SupplierAccountRoute
   '/supplier/demand': typeof SupplierDemandRoute
+  '/supplier/orders': typeof SupplierOrdersRoute
+  '/supplier/payments': typeof SupplierPaymentsRoute
   '/orders/': typeof OrdersIndexRoute
   '/sourcing/': typeof SourcingIndexRoute
   '/supplier/': typeof SupplierIndexRoute
   '/sourcing/category/$categoryId': typeof SourcingCategoryCategoryIdRoute
   '/sourcing/product/$productId': typeof SourcingProductProductIdRoute
+  '/supplier/po/$poId': typeof SupplierPoPoIdRoute
   '/supplier/requirement/$reqId': typeof SupplierRequirementReqIdRoute
 }
 export interface FileRoutesByTo {
@@ -130,12 +158,16 @@ export interface FileRoutesByTo {
   '/checkout/$productId': typeof CheckoutProductIdRoute
   '/orders/$orderId': typeof OrdersOrderIdRoute
   '/sourcing/requirement': typeof SourcingRequirementRoute
+  '/supplier/account': typeof SupplierAccountRoute
   '/supplier/demand': typeof SupplierDemandRoute
+  '/supplier/orders': typeof SupplierOrdersRoute
+  '/supplier/payments': typeof SupplierPaymentsRoute
   '/orders': typeof OrdersIndexRoute
   '/sourcing': typeof SourcingIndexRoute
   '/supplier': typeof SupplierIndexRoute
   '/sourcing/category/$categoryId': typeof SourcingCategoryCategoryIdRoute
   '/sourcing/product/$productId': typeof SourcingProductProductIdRoute
+  '/supplier/po/$poId': typeof SupplierPoPoIdRoute
   '/supplier/requirement/$reqId': typeof SupplierRequirementReqIdRoute
 }
 export interface FileRoutesById {
@@ -148,12 +180,16 @@ export interface FileRoutesById {
   '/checkout/$productId': typeof CheckoutProductIdRoute
   '/orders/$orderId': typeof OrdersOrderIdRoute
   '/sourcing/requirement': typeof SourcingRequirementRoute
+  '/supplier/account': typeof SupplierAccountRoute
   '/supplier/demand': typeof SupplierDemandRoute
+  '/supplier/orders': typeof SupplierOrdersRoute
+  '/supplier/payments': typeof SupplierPaymentsRoute
   '/orders/': typeof OrdersIndexRoute
   '/sourcing/': typeof SourcingIndexRoute
   '/supplier/': typeof SupplierIndexRoute
   '/sourcing/category/$categoryId': typeof SourcingCategoryCategoryIdRoute
   '/sourcing/product/$productId': typeof SourcingProductProductIdRoute
+  '/supplier/po/$poId': typeof SupplierPoPoIdRoute
   '/supplier/requirement/$reqId': typeof SupplierRequirementReqIdRoute
 }
 export interface FileRouteTypes {
@@ -167,12 +203,16 @@ export interface FileRouteTypes {
     | '/checkout/$productId'
     | '/orders/$orderId'
     | '/sourcing/requirement'
+    | '/supplier/account'
     | '/supplier/demand'
+    | '/supplier/orders'
+    | '/supplier/payments'
     | '/orders/'
     | '/sourcing/'
     | '/supplier/'
     | '/sourcing/category/$categoryId'
     | '/sourcing/product/$productId'
+    | '/supplier/po/$poId'
     | '/supplier/requirement/$reqId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -184,12 +224,16 @@ export interface FileRouteTypes {
     | '/checkout/$productId'
     | '/orders/$orderId'
     | '/sourcing/requirement'
+    | '/supplier/account'
     | '/supplier/demand'
+    | '/supplier/orders'
+    | '/supplier/payments'
     | '/orders'
     | '/sourcing'
     | '/supplier'
     | '/sourcing/category/$categoryId'
     | '/sourcing/product/$productId'
+    | '/supplier/po/$poId'
     | '/supplier/requirement/$reqId'
   id:
     | '__root__'
@@ -201,12 +245,16 @@ export interface FileRouteTypes {
     | '/checkout/$productId'
     | '/orders/$orderId'
     | '/sourcing/requirement'
+    | '/supplier/account'
     | '/supplier/demand'
+    | '/supplier/orders'
+    | '/supplier/payments'
     | '/orders/'
     | '/sourcing/'
     | '/supplier/'
     | '/sourcing/category/$categoryId'
     | '/sourcing/product/$productId'
+    | '/supplier/po/$poId'
     | '/supplier/requirement/$reqId'
   fileRoutesById: FileRoutesById
 }
@@ -219,12 +267,16 @@ export interface RootRouteChildren {
   CheckoutProductIdRoute: typeof CheckoutProductIdRoute
   OrdersOrderIdRoute: typeof OrdersOrderIdRoute
   SourcingRequirementRoute: typeof SourcingRequirementRoute
+  SupplierAccountRoute: typeof SupplierAccountRoute
   SupplierDemandRoute: typeof SupplierDemandRoute
+  SupplierOrdersRoute: typeof SupplierOrdersRoute
+  SupplierPaymentsRoute: typeof SupplierPaymentsRoute
   OrdersIndexRoute: typeof OrdersIndexRoute
   SourcingIndexRoute: typeof SourcingIndexRoute
   SupplierIndexRoute: typeof SupplierIndexRoute
   SourcingCategoryCategoryIdRoute: typeof SourcingCategoryCategoryIdRoute
   SourcingProductProductIdRoute: typeof SourcingProductProductIdRoute
+  SupplierPoPoIdRoute: typeof SupplierPoPoIdRoute
   SupplierRequirementReqIdRoute: typeof SupplierRequirementReqIdRoute
 }
 
@@ -307,11 +359,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SupplierIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/supplier/account': {
+      id: '/supplier/account'
+      path: '/supplier/account'
+      fullPath: '/supplier/account'
+      preLoaderRoute: typeof SupplierAccountRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/supplier/demand': {
       id: '/supplier/demand'
       path: '/supplier/demand'
       fullPath: '/supplier/demand'
       preLoaderRoute: typeof SupplierDemandRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/supplier/orders': {
+      id: '/supplier/orders'
+      path: '/supplier/orders'
+      fullPath: '/supplier/orders'
+      preLoaderRoute: typeof SupplierOrdersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/supplier/payments': {
+      id: '/supplier/payments'
+      path: '/supplier/payments'
+      fullPath: '/supplier/payments'
+      preLoaderRoute: typeof SupplierPaymentsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sourcing/category/$categoryId': {
@@ -326,6 +399,13 @@ declare module '@tanstack/react-router' {
       path: '/sourcing/product/$productId'
       fullPath: '/sourcing/product/$productId'
       preLoaderRoute: typeof SourcingProductProductIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/supplier/po/$poId': {
+      id: '/supplier/po/$poId'
+      path: '/supplier/po/$poId'
+      fullPath: '/supplier/po/$poId'
+      preLoaderRoute: typeof SupplierPoPoIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/supplier/requirement/$reqId': {
@@ -347,12 +427,16 @@ const rootRouteChildren: RootRouteChildren = {
   CheckoutProductIdRoute: CheckoutProductIdRoute,
   OrdersOrderIdRoute: OrdersOrderIdRoute,
   SourcingRequirementRoute: SourcingRequirementRoute,
+  SupplierAccountRoute: SupplierAccountRoute,
   SupplierDemandRoute: SupplierDemandRoute,
+  SupplierOrdersRoute: SupplierOrdersRoute,
+  SupplierPaymentsRoute: SupplierPaymentsRoute,
   OrdersIndexRoute: OrdersIndexRoute,
   SourcingIndexRoute: SourcingIndexRoute,
   SupplierIndexRoute: SupplierIndexRoute,
   SourcingCategoryCategoryIdRoute: SourcingCategoryCategoryIdRoute,
   SourcingProductProductIdRoute: SourcingProductProductIdRoute,
+  SupplierPoPoIdRoute: SupplierPoPoIdRoute,
   SupplierRequirementReqIdRoute: SupplierRequirementReqIdRoute,
 }
 export const routeTree = rootRouteImport
