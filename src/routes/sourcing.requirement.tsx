@@ -94,7 +94,7 @@ function RequirementScreen() {
 
   const missing = effective
     ? (parsed?.questions ?? []).filter((q) => {
-        const map: Record<string, string> = {
+        const map: Record<string, string | undefined> = {
           qty: draft.qty,
           composition: draft.composition,
           gsm: draft.gsm,
@@ -209,7 +209,7 @@ function RequirementScreen() {
                     <Field
                       key={key}
                       id={`d-${key}`}
-                      label={lang === "hi" ? FIELD_LABELS[key][1] : FIELD_LABELS[key][0]}
+                      label={lang === "hi" ? FIELD_LABELS[key]![1] : FIELD_LABELS[key]![0]}
                     >
                       <Input
                         id={`d-${key}`}

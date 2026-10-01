@@ -82,7 +82,7 @@ function OrdersScreen() {
               <Empty>{t("none")}</Empty>
             ) : (
               s.orders.map((o) => (
-                <Link key={o.id} to="/orders/$orderId" params={{ orderId: o.id }}>
+                <Link key={o.id} to="/orders/$orderId" search={{ placed: false }} params={{ orderId: o.id }}>
                   <Card>
                     <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-2">
                       <p className="min-w-0 truncate text-sm font-semibold text-foreground">{o.productName}</p>
