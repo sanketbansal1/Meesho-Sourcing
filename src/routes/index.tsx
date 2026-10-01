@@ -3,8 +3,8 @@ import { ArrowRight, Info, Layers, Package, Wallet } from "lucide-react";
 import { useState } from "react";
 import { IntroSheet } from "@/components/app/IntroSheet";
 import { Screen } from "@/components/app/Shell";
-import { Button, Card, Note, Pill, SectionTitle } from "@/components/app/ui";
-import { SELLER } from "@/lib/demo/catalog";
+import { Button, Card, MaterialTile, Note, Pill, SectionTitle } from "@/components/app/ui";
+import { SELLER, getProduct } from "@/lib/demo/catalog";
 import { rupees } from "@/lib/demo/money";
 import { MARKETPLACE } from "@/lib/demo/seed";
 import { actions } from "@/lib/demo/store";
@@ -31,7 +31,10 @@ export const Route = createFileRoute("/")({
 
 function HomeScreen() {
   const { s, t, lang } = useApp();
+  const hi = lang === "hi";
   const [intro, setIntro] = useState(false);
+  const jersey = getProduct("fab-jersey-black");
+  const jerseyBatch = s.batches.find((b) => b.id === "batch-jersey");
   const activeOrder = s.orders.find((o) => o.stage !== "received" && o.stage !== "expired_refunded");
   const unread = s.notifications.filter((n) => n.forRole !== "supplier").slice(0, 4);
 
@@ -63,18 +66,85 @@ function HomeScreen() {
           </Card>
         </div>
 
-        <Link
-          to="/sourcing"
-          className="block rounded-xl bg-primary p-4 text-primary-foreground shadow-app"
-        >
-          <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
-            <div className="min-w-0">
-              <p className="text-base font-bold">{t("sourceMaterials")}</p>
-              <p className="text-xs opacity-90">{t("sourceMaterialsSub")}</p>
-            </div>
-            <ArrowRight className="h-5 w-5 shrink-0" aria-hidden />
+        <section className="rounded-2xl border border-primary/20 bg-primary-soft p-4">
+          <h2 className="text-lg font-bold leading-snug text-foreground">
+            {hi ? "आपके अगले प्रोडक्शन के लिए मटीरियल" : "Materials for your next production run"}
+          </h2>
+          <p className="mt-1 text-sm text-foreground/80">
+            {hi
+              ? "अलग-अलग क्षेत्रों के सप्लायर देखिए, साथ मिलकर खरीदिए और मंज़ूर सोर्सिंग क्रेडिट इस्तेमाल कीजिए।"
+              : "Explore suppliers across regions, buy together and use approved sourcing credit."}
+          </p>
+          <div className="mt-3 grid grid-cols-2 gap-2">
+            <Link
+              to="/sourcing"
+              className="tap flex items-center justify-center gap-1 rounded-xl bg-primary px-3 text-sm font-semibold text-primary-foreground"
+            >
+              {hi ? "मटीरियल देखें" : "Explore materials"}
+              <ArrowRight className="h-4 w-4" aria-hidden />
+            </Link>
+            <Link
+              to="/sourcing/requirement"
+              className="tap flex items-center justify-center rounded-xl border border-primary/40 bg-card px-3 text-center text-sm font-semibold text-primary"
+            >
+              {hi ? "अपनी ज़रूरत बताएँ" : "Describe my requirement"}
+            </Link>
           </div>
-        </Link>
+
+          {jersey && jerseyBatch && jerseyBatch.status === "open" ? (
+            <Link
+              to="/sourcing/product/$productId"
+              params={{ productId: jersey.id }}
+              search={{ route: "batch" }}
+              className="mt-3 grid grid-cols-[64px_minmax(0,1fr)] items-center gap-3 rounded-xl bg-card p-2"
+            >
+              <MaterialTile swatch={jersey.image} label={jersey.nameEn} className="aspect-square w-16" />
+              <div className="min-w-0">
+                <p className="truncate text-xs font-semibold text-foreground">{hi ? jersey.nameHi : jersey.nameEn}</p>
+                <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-secondary" aria-hidden>
+                  <div
+                    className="h-full rounded-full bg-primary"
+                    style={{ width: `${(jerseyBatch.committedQty / jerseyBatch.thresholdQty) * 100}%` }}
+                  />
+                </div>
+                <p className="num mt-1 text-[11px] text-foreground">
+                  {jerseyBatch.committedQty.toLocaleString("en-IN")}/{jerseyBatch.thresholdQty.toLocaleString("en-IN")} m ·{" "}
+                  <span className="font-semibold text-primary">
+                    {jerseyBatch.thresholdQty - jerseyBatch.committedQty} m {hi ? "बाकी" : "left to confirm"}
+                  </span>
+                </p>
+              </div>
+            </Link>
+          ) : null}
+
+          <ol className="mt-3 grid grid-cols-3 gap-1 text-center text-[11px] font-semibold text-foreground">
+            {(hi
+              ? ["मटीरियल खरीदें", "प्रोडक्ट बनाएँ", "बिक्री से किश्त"]
+              : ["Source materials", "Make products", "Track repayment from sales"]
+            ).map((label, i) => (
+              <li key={label} className="relative rounded-lg bg-card px-1 py-2">
+                <span className="num mb-0.5 block text-primary">{i + 1}</span>
+                {label}
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        <div className="grid grid-cols-2 gap-2">
+          <Button
+            onClick={() => {
+              actions.startTour();
+            }}
+          >
+            {hi ? "पूरी यात्रा आज़माएँ" : "Try full journey"}
+          </Button>
+          <Link
+            to="/sourcing"
+            className="tap flex items-center justify-center rounded-xl border border-border bg-card text-sm font-semibold text-foreground"
+          >
+            {hi ? "खुद देखें" : "Explore freely"}
+          </Link>
+        </div>
 
         <button
           onClick={() => setIntro(true)}
