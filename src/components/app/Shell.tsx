@@ -7,7 +7,6 @@ import {
   Inbox,
   Layers,
   type LucideIcon,
-  Store,
   User,
   Wand2,
 } from "lucide-react";
