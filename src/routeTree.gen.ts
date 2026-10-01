@@ -12,12 +12,14 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AccountRouteImport } from './routes/account'
+import { Route as DemoRouteImport } from './routes/demo'
 import { Route as PaymentsRouteImport } from './routes/payments'
 import { Route as CheckoutProductIdRouteImport } from './routes/checkout.$productId'
 import { Route as OrdersIndexRouteImport } from './routes/orders.index'
 import { Route as OrdersOrderIdRouteImport } from './routes/orders.$orderId'
 import { Route as SourcingIndexRouteImport } from './routes/sourcing.index'
 import { Route as SourcingRequirementRouteImport } from './routes/sourcing.requirement'
+import { Route as SupplierIndexRouteImport } from './routes/supplier.index'
 import { Route as SourcingCategoryCategoryIdRouteImport } from './routes/sourcing.category.$categoryId'
 import { Route as SourcingProductProductIdRouteImport } from './routes/sourcing.product.$productId'
 
@@ -34,6 +36,11 @@ const AboutRoute = AboutRouteImport.update({
 const AccountRoute = AccountRouteImport.update({
   id: '/account',
   path: '/account',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DemoRoute = DemoRouteImport.update({
+  id: '/demo',
+  path: '/demo',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PaymentsRoute = PaymentsRouteImport.update({
@@ -66,6 +73,11 @@ const SourcingRequirementRoute = SourcingRequirementRouteImport.update({
   path: '/sourcing/requirement',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SupplierIndexRoute = SupplierIndexRouteImport.update({
+  id: '/supplier/',
+  path: '/supplier/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SourcingCategoryCategoryIdRoute =
   SourcingCategoryCategoryIdRouteImport.update({
     id: '/sourcing/category/$categoryId',
@@ -83,12 +95,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/account': typeof AccountRoute
+  '/demo': typeof DemoRoute
   '/payments': typeof PaymentsRoute
   '/checkout/$productId': typeof CheckoutProductIdRoute
   '/orders/$orderId': typeof OrdersOrderIdRoute
   '/sourcing/requirement': typeof SourcingRequirementRoute
   '/orders/': typeof OrdersIndexRoute
   '/sourcing/': typeof SourcingIndexRoute
+  '/supplier/': typeof SupplierIndexRoute
   '/sourcing/category/$categoryId': typeof SourcingCategoryCategoryIdRoute
   '/sourcing/product/$productId': typeof SourcingProductProductIdRoute
 }
@@ -96,12 +110,14 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/account': typeof AccountRoute
+  '/demo': typeof DemoRoute
   '/payments': typeof PaymentsRoute
   '/checkout/$productId': typeof CheckoutProductIdRoute
   '/orders/$orderId': typeof OrdersOrderIdRoute
   '/sourcing/requirement': typeof SourcingRequirementRoute
   '/orders': typeof OrdersIndexRoute
   '/sourcing': typeof SourcingIndexRoute
+  '/supplier': typeof SupplierIndexRoute
   '/sourcing/category/$categoryId': typeof SourcingCategoryCategoryIdRoute
   '/sourcing/product/$productId': typeof SourcingProductProductIdRoute
 }
@@ -110,12 +126,14 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/account': typeof AccountRoute
+  '/demo': typeof DemoRoute
   '/payments': typeof PaymentsRoute
   '/checkout/$productId': typeof CheckoutProductIdRoute
   '/orders/$orderId': typeof OrdersOrderIdRoute
   '/sourcing/requirement': typeof SourcingRequirementRoute
   '/orders/': typeof OrdersIndexRoute
   '/sourcing/': typeof SourcingIndexRoute
+  '/supplier/': typeof SupplierIndexRoute
   '/sourcing/category/$categoryId': typeof SourcingCategoryCategoryIdRoute
   '/sourcing/product/$productId': typeof SourcingProductProductIdRoute
 }
@@ -125,12 +143,14 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/account'
+    | '/demo'
     | '/payments'
     | '/checkout/$productId'
     | '/orders/$orderId'
     | '/sourcing/requirement'
     | '/orders/'
     | '/sourcing/'
+    | '/supplier/'
     | '/sourcing/category/$categoryId'
     | '/sourcing/product/$productId'
   fileRoutesByTo: FileRoutesByTo
@@ -138,12 +158,14 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/account'
+    | '/demo'
     | '/payments'
     | '/checkout/$productId'
     | '/orders/$orderId'
     | '/sourcing/requirement'
     | '/orders'
     | '/sourcing'
+    | '/supplier'
     | '/sourcing/category/$categoryId'
     | '/sourcing/product/$productId'
   id:
@@ -151,12 +173,14 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/account'
+    | '/demo'
     | '/payments'
     | '/checkout/$productId'
     | '/orders/$orderId'
     | '/sourcing/requirement'
     | '/orders/'
     | '/sourcing/'
+    | '/supplier/'
     | '/sourcing/category/$categoryId'
     | '/sourcing/product/$productId'
   fileRoutesById: FileRoutesById
@@ -165,12 +189,14 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AccountRoute: typeof AccountRoute
+  DemoRoute: typeof DemoRoute
   PaymentsRoute: typeof PaymentsRoute
   CheckoutProductIdRoute: typeof CheckoutProductIdRoute
   OrdersOrderIdRoute: typeof OrdersOrderIdRoute
   SourcingRequirementRoute: typeof SourcingRequirementRoute
   OrdersIndexRoute: typeof OrdersIndexRoute
   SourcingIndexRoute: typeof SourcingIndexRoute
+  SupplierIndexRoute: typeof SupplierIndexRoute
   SourcingCategoryCategoryIdRoute: typeof SourcingCategoryCategoryIdRoute
   SourcingProductProductIdRoute: typeof SourcingProductProductIdRoute
 }
@@ -196,6 +222,13 @@ declare module '@tanstack/react-router' {
       path: '/account'
       fullPath: '/account'
       preLoaderRoute: typeof AccountRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/demo': {
+      id: '/demo'
+      path: '/demo'
+      fullPath: '/demo'
+      preLoaderRoute: typeof DemoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/payments': {
@@ -240,6 +273,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SourcingRequirementRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/supplier/': {
+      id: '/supplier/'
+      path: '/supplier'
+      fullPath: '/supplier/'
+      preLoaderRoute: typeof SupplierIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sourcing/category/$categoryId': {
       id: '/sourcing/category/$categoryId'
       path: '/sourcing/category/$categoryId'
@@ -261,12 +301,14 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AccountRoute: AccountRoute,
+  DemoRoute: DemoRoute,
   PaymentsRoute: PaymentsRoute,
   CheckoutProductIdRoute: CheckoutProductIdRoute,
   OrdersOrderIdRoute: OrdersOrderIdRoute,
   SourcingRequirementRoute: SourcingRequirementRoute,
   OrdersIndexRoute: OrdersIndexRoute,
   SourcingIndexRoute: SourcingIndexRoute,
+  SupplierIndexRoute: SupplierIndexRoute,
   SourcingCategoryCategoryIdRoute: SourcingCategoryCategoryIdRoute,
   SourcingProductProductIdRoute: SourcingProductProductIdRoute,
 }
