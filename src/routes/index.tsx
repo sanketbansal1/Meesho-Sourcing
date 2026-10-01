@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ChevronRight, Compass, Sparkles } from "lucide-react";
 import { Screen } from "@/components/app/Shell";
-import { MaterialTile, Pill } from "@/components/app/ui";
+import { MaterialTile } from "@/components/app/ui";
 import { CATEGORIES, SELLER, getProduct } from "@/lib/demo/catalog";
 import { perUnit, rupees } from "@/lib/demo/money";
 import { MARKETPLACE } from "@/lib/demo/seed";
@@ -68,13 +68,13 @@ function HomeScreen() {
     <Screen
       title="Meesho Sourcing"
       subtitle={`${SELLER.business} · ${SELLER.city}`}
+      home
     >
       <div className="min-h-full space-y-5 bg-surface px-4 pb-4 pt-4">
         {/* B. Greeting + summary */}
         <section className="space-y-2">
-          <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
             <h2 className="text-xl font-bold text-foreground">{t("greeting")}</h2>
-            <Pill tone="brand">{t("conceptDemo")}</Pill>
           </div>
           <div className="grid grid-cols-3 divide-x divide-border rounded-xl bg-card py-3">
             {metrics.map((m) => {

@@ -30,7 +30,7 @@ function SupplierHome() {
   const news = s.notifications.filter((n) => n.forRole !== "seller").slice(0, 3);
 
   return (
-    <Screen title={me.name} subtitle={`${me.city}, ${me.state} · ${t("conceptDemo")}`}>
+    <Screen title={me.name} subtitle={`${me.name} · ${me.city}`} home>
       <div className="space-y-3 px-4 pt-3">
         <Note tone="brand">
           {lang === "hi"
