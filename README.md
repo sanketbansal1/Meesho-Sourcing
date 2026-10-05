@@ -1,7 +1,5 @@
 # Meesho Sourcing
 
-### Interactive concept prototype for the Meesho DICE competition
-
 **Helping small manufacturers source raw materials, pool demand and manage procurement payments within the Meesho ecosystem.**
 
 [**Explore the live prototype →**](https://pixel-perfect-view-6597.lovable.app)
