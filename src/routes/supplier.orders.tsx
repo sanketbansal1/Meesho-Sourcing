@@ -49,10 +49,6 @@ function SupplierOrders() {
                   value={rupees(po.totalQty * po.unitPricePaise)}
                   strong
                 />
-                <Row
-                  label={lang === "hi" ? "डिलीवरी (मीशो सँभालती)" : "Delivery (handled by Meesho)"}
-                  value={rupees(s.batches.find((b) => b.id === po.batchId)?.deliveryPaise ?? 0)}
-                />
                 <Row label={lang === "hi" ? "बना" : "Created"} value={formatDate(po.createdAt, lang)} />
               </Card>
             </Link>

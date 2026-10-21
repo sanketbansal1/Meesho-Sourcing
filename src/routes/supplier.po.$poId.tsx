@@ -53,10 +53,6 @@ function PODetail() {
             value={rupees(po.totalQty * po.unitPricePaise)}
             strong
           />
-          <Row
-            label={lang === "hi" ? "डिलीवरी (मीशो सँभालती)" : "Delivery (handled by Meesho)"}
-            value={rupees(s.batches.find((b) => b.id === po.batchId)?.deliveryPaise ?? 0)}
-          />
           <Row label={t("participatingBusinesses")} value={String(po.participants)} />
           <Row label={t("paymentStatus")} value={po.paymentStatus.replace("_", " ")} />
           {po.dispatchRef ? <Row label="Dispatch reference" value={po.dispatchRef} /> : null}
