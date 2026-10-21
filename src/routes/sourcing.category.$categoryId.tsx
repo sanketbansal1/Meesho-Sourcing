@@ -11,7 +11,7 @@ export const Route = createFileRoute("/sourcing/category/$categoryId")({
       { title: "Material category — Meesho Sourcing concept" },
       {
         name: "description",
-        content: "Browse raw materials in this category with specifications, delivered prices and batch availability.",
+        content: "Browse raw materials in this category with specifications, material prices and batch availability.",
       },
       { property: "og:title", content: "Material category — Meesho Sourcing concept" },
       { property: "og:description", content: "Category browsing for the Meesho Sourcing concept prototype." },

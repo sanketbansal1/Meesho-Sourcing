@@ -27,12 +27,12 @@ export const Route = createFileRoute("/sourcing/product/$productId")({
       {
         name: "description",
         content:
-          "Full specifications, delivered quote, batch progress and supplier comparison for a raw material in the concept prototype.",
+          "Full specifications, price breakdown, batch progress and supplier comparison for a raw material in the concept prototype.",
       },
       { property: "og:title", content: "Material details — Meesho Sourcing concept" },
       {
         property: "og:description",
-        content: "Compare delivered options and join a pooled buying batch.",
+        content: "Compare options and join a pooled buying batch.",
       },
     ],
   }),
@@ -246,8 +246,7 @@ function ProductScreen() {
           {pricing ? (
             <div className="mt-2 border-t border-border pt-2">
               <Row label={t("perUnitPrice")} value={rupees(pricing.materialPaise)} />
-              <Row label={t("delivery")} value={lang === "hi" ? "सप्लायर देगा" : "Paid by supplier"} />
-              <Row label={t("preTaxDelivered")} value={rupees(pricing.materialPaise + pricing.deliveryPaise)} strong />
+              <Row label={t("preTaxDelivered")} value={rupees(pricing.materialPaise)} strong />
               <Row label={t("demoTax")} value={rupees(pricing.taxPaise)} tone="muted" />
               <Row label={t("totalPayable")} value={rupees(pricing.totalPaise)} strong />
               {saving && saving.amount > 0 ? (
@@ -255,8 +254,8 @@ function ProductScreen() {
                   {t("savings")} {rupees(saving.amount)} ({saving.pct.toFixed(1)}%){" "}
                   <span className="font-normal text-muted-foreground">
                     {lang === "hi"
-                      ? "आपके दर्ज लोकल रेट से, टैक्स से पहले डिलीवर्ड आधार पर"
-                      : "vs your entered local quote, pre-tax delivered basis"}
+                      ? "आपके दर्ज लोकल रेट से, टैक्स से पहले"
+                      : "vs your entered local quote, pre-tax"}
                   </span>
                 </p>
               ) : null}
@@ -353,14 +352,14 @@ function ProductScreen() {
           <div className="space-y-2 px-4">
             <p className="text-[11px] text-muted-foreground">
               {lang === "hi"
-                ? `समान स्पेसिफ़िकेशन, ${qty} ${product.unit}, टैक्स से पहले डिलीवर्ड लागत।`
-                : `Same specification, ${qty} ${product.unit}, delivered cost before tax.`}
+                ? `समान स्पेसिफ़िकेशन, ${qty} ${product.unit}, टैक्स से पहले मटीरियल लागत।`
+                : `Same specification, ${qty} ${product.unit}, material cost before tax.`}
             </p>
             {(() => {
               const rows = options.map((o) => {
                 const isLocal = o.id === "alt-delhi";
                 const unit = isLocal ? localPaise : o.unit;
-                return { ...o, isLocal, unit, delivered: unit * qty + o.delivery };
+                return { ...o, isLocal, unit, delivered: unit * qty };
               });
               const platform = rows.filter((r) => !r.isLocal);
               const minAll = Math.min(...rows.map((r) => r.delivered));
@@ -381,15 +380,14 @@ function ProductScreen() {
                         {o.isLocal ? (lang === "hi" ? "आपका लोकल रेट (संदर्भ)" : "Your local quote (reference)") : o.name}
                       </p>
                       <p className="text-[11px] text-muted-foreground">
-                        {o.city} · {o.lead} {lang === "hi" ? "दिन" : "days"} · {perUnit(o.unit, product.unit)} +{" "}
-                        {rupees(o.delivery)}
+                        {o.city} · {o.lead} {lang === "hi" ? "दिन" : "days"} · {perUnit(o.unit, product.unit)}
                       </p>
                     </div>
                     <p className="num shrink-0 text-right text-sm font-bold text-foreground">{rupees(o.delivered)}</p>
                   </div>
                   <div className="mt-1 flex flex-wrap gap-1">
                     {o.delivered === minAll ? (
-                      <Pill tone="positive">{lang === "hi" ? "सबसे कम डिलीवर्ड लागत" : "Lowest delivered cost"}</Pill>
+                      <Pill tone="positive">{lang === "hi" ? "सबसे कम मटीरियल लागत" : "Lowest material cost"}</Pill>
                     ) : null}
                     {o.lead === minLead ? (
                       <Pill tone="neutral">{lang === "hi" ? "सबसे तेज़ डिलीवरी" : "Fastest delivery"}</Pill>
@@ -401,7 +399,7 @@ function ProductScreen() {
                   {o.isLocal ? (
                     <div className="mt-2 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
                       <label htmlFor="local-quote" className="text-[11px] text-muted-foreground">
-                        {lang === "hi" ? `आपका रेट (₹/${product.unit}, डिलीवरी सहित)` : `Your rate (₹/${product.unit}, delivered)`}
+                        {lang === "hi" ? `आपका रेट (₹/${product.unit})` : `Your rate (₹/${product.unit})`}
                       </label>
                       <input
                         id="local-quote"

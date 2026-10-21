@@ -20,7 +20,7 @@ export const Route = createFileRoute("/checkout/$productId")({
       {
         name: "description",
         content:
-          "Simulated checkout for raw materials: delivered price breakdown, demo tax, pay now or approved sourcing credit.",
+          "Simulated checkout for raw materials: price breakdown, demo tax, pay now or approved sourcing credit.",
       },
       { property: "og:title", content: "Checkout — Meesho Sourcing concept" },
       { property: "og:description", content: "Pay now or use simulated sourcing credit in the concept prototype." },
@@ -136,8 +136,7 @@ function CheckoutScreen() {
 
         <Card>
           <Row label={t("perUnitPrice")} value={rupees(pricing.materialPaise)} />
-          <Row label={t("delivery")} value={lang === "hi" ? "सप्लायर देगा" : "Paid by supplier"} />
-          <Row label={t("preTaxDelivered")} value={rupees(pricing.materialPaise + pricing.deliveryPaise)} />
+          <Row label={t("preTaxDelivered")} value={rupees(pricing.materialPaise)} />
           <Row label={t("demoTax")} value={rupees(pricing.taxPaise)} tone="muted" />
           <div className="mt-1 border-t border-border pt-1">
             <Row label={t("totalPayable")} value={rupees(pricing.totalPaise)} strong />

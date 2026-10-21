@@ -192,9 +192,9 @@ export function findMatches(
         );
         reasonsHi.push(`मात्रा: ${parsed.qty} ${p.unit} (${p.buyNow.minQty}–${p.buyNow.maxQty})`);
         if (ok) {
-          const delivered = (p.buyNow.unitPricePaise * parsed.qty + p.buyNow.deliveryPaise) / 100;
-          reasonsEn.push(`Delivered cost: ₹${delivered.toLocaleString("en-IN")} before tax (buy now)`);
-          reasonsHi.push(`डिलीवर्ड लागत: ₹${delivered.toLocaleString("en-IN")} टैक्स से पहले`);
+          const cost = (p.buyNow.unitPricePaise * parsed.qty) / 100;
+          reasonsEn.push(`Material cost: ₹${cost.toLocaleString("en-IN")} before tax (buy now)`);
+          reasonsHi.push(`मटीरियल लागत: ₹${cost.toLocaleString("en-IN")} टैक्स से पहले`);
         }
       }
       const lead = p.buyNow?.leadDays ?? 7;
