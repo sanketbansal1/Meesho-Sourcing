@@ -16,12 +16,12 @@ export const Route = createFileRoute("/sourcing/")({
       {
         name: "description",
         content:
-          "Search fabrics, trims, packaging and jewellery components, compare delivered prices and join open buying batches.",
+          "Search fabrics, trims, packaging and jewellery components, compare material prices and join open buying batches.",
       },
       { property: "og:title", content: "Source raw materials — Meesho Sourcing concept" },
       {
         property: "og:description",
-        content: "Browse materials by category, filter by delivered price and origin, and join pooled batches.",
+        content: "Browse materials by category, filter by material price and origin, and join pooled batches.",
       },
     ],
   }),

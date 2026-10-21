@@ -116,8 +116,8 @@ const BLOCKS: { en: [string, string[]]; hi: [string, string[]] }[] = [
       "Demo assumptions",
       [
         "All prices, suppliers, batches, credit limits and outcomes are illustrative demo data.",
-        "A 5% demo tax is applied on material plus delivery for arithmetic consistency; it is a prototype assumption, not a tax determination.",
-        "Headline savings are stated on a pre-tax delivered basis against the seller's own entered local quote.",
+        "A 5% demo tax is applied on the material value for arithmetic consistency; it is a prototype assumption, not a tax determination.",
+        "Headline savings are stated on a pre-tax basis against the seller's own entered local quote.",
         "The ₹400 delivery rate applies only within the quoted 50–200 m range; other quantities need a fresh quote.",
         "Supplier badges mean the record was seeded as onboarded; no inspection, reviews or quality claims are implied.",
         "The assistant is deterministic keyword matching, not AI, and never judges physical quality.",
