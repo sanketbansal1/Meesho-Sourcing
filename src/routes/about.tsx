@@ -44,7 +44,7 @@ const BLOCKS: { en: [string, string[]]; hi: [string, string[]] }[] = [
       "Seller benefits",
       [
         "Reach material suppliers beyond the local market.",
-        "Delivery is handled by Meesho — sellers pay only the material price.",
+        "Delivery is charged to the seller at the quoted rate, shown separately before tax.",
         "Buy a small share inside a larger combined order.",
         "Optional approved procurement credit, repaid from sales settlements.",
       ],
@@ -53,7 +53,7 @@ const BLOCKS: { en: [string, string[]]; hi: [string, string[]] }[] = [
       "सेलर को फ़ायदा",
       [
         "स्थानीय बाज़ार से आगे के सप्लायर तक पहुँच।",
-        "डिलीवर मीशो सँभालती है — विक्रेता सिर्फ़ मटीरियल दाम चुकाता है।",
+        "डिलीवरी शुल्क कोट किए गए रेट पर सेलर चुकाता है, टैक्स से पहले अलग दिखता है।",
         "बड़े संयुक्त ऑर्डर में छोटा हिस्सा खरीदना।",
         "वैकल्पिक मंज़ूर क्रेडिट, जो बिक्री सेटलमेंट से चुकता है।",
       ],

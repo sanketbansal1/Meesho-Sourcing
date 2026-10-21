@@ -193,8 +193,13 @@ export function findMatches(
         reasonsHi.push(`मात्रा: ${parsed.qty} ${p.unit} (${p.buyNow.minQty}–${p.buyNow.maxQty})`);
         if (ok) {
           const cost = (p.buyNow.unitPricePaise * parsed.qty) / 100;
-          reasonsEn.push(`Material cost: ₹${cost.toLocaleString("en-IN")} before tax (buy now)`);
-          reasonsHi.push(`मटीरियल लागत: ₹${cost.toLocaleString("en-IN")} टैक्स से पहले`);
+          const del = p.buyNow.deliveryPaise / 100;
+          reasonsEn.push(
+            `Material cost: ₹${cost.toLocaleString("en-IN")} + ₹${del.toLocaleString("en-IN")} delivery, before tax (buy now)`,
+          );
+          reasonsHi.push(
+            `मटीरियल लागत: ₹${cost.toLocaleString("en-IN")} + ₹${del.toLocaleString("en-IN")} डिलीवरी, टैक्स से पहले`,
+          );
         }
       }
       const lead = p.buyNow?.leadDays ?? 7;
