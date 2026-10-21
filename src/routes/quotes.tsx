@@ -14,12 +14,12 @@ export const Route = createFileRoute("/quotes")({
       {
         name: "description",
         content:
-          "Compare delivered quotes from material suppliers: unit price, delivered total, minimum quantity, lead time and quote expiry.",
+          "Compare quotes from material suppliers: unit price, pre-tax total, minimum quantity, lead time and quote expiry.",
       },
       { property: "og:title", content: "Quotes for your requirements — Meesho Sourcing concept" },
       {
         property: "og:description",
-        content: "Side-by-side comparison of supplier quotes on a delivered-cost basis.",
+        content: "Side-by-side comparison of supplier quotes on a material-price basis.",
       },
     ],
   }),
@@ -43,7 +43,7 @@ function QuotesScreen() {
 
         {reqs.map((r) => {
           const quotes = s.quotes.filter((q) => q.requirementId === r.id);
-          const delivered = quotes.map((q) => q.unitPricePaise * r.qty + q.deliveryPaise);
+          const delivered = quotes.map((q) => q.unitPricePaise * r.qty);
           const best = Math.min(...delivered);
           return (
             <div key={r.id} className="space-y-2">
@@ -70,7 +70,6 @@ function QuotesScreen() {
                       )}
                     </div>
                     <Row label={t("unitPrice")} value={`₹${(q.unitPricePaise / 100).toFixed(2)}/${r.unit}`} />
-                    <Row label={t("delivery")} value={rupees(q.deliveryPaise)} />
                     <Row label={t("deliveredTotal")} value={rupees(total)} strong tone={isBest ? "positive" : undefined} />
                     <Row label={t("minQty")} value={`${q.minQty} – ${q.maxQty} ${r.unit}`} />
                     <Row label={t("leadTime")} value={`${q.leadDays} ${lang === "hi" ? "दिन" : "days"}`} />
@@ -111,8 +110,8 @@ function QuotesScreen() {
 
         <Note>
           {lang === "hi"
-            ? "तुलना डिलीवर्ड लागत पर है — दाम और डिलीवरी मिलाकर। सभी आँकड़े काल्पनिक डेमो डेटा हैं।"
-            : "Comparison is on delivered cost — price plus delivery together. All figures are illustrative demo data."}
+            ? "तुलना टैक्स से पहले मटीरियल दाम पर है। डिलीवरी का खर्च मटीरियल सप्लायर उठाता है, विक्रेता नहीं। सभी आँकड़े काल्पनिक डेमो डेटा हैं।"
+            : "Comparison is on material price before tax. The delivery charge is borne by the material supplier, not the seller. All figures are illustrative demo data."}
         </Note>
       </div>
       <div className="h-6" />

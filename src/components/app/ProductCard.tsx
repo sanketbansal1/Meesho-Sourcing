@@ -124,7 +124,7 @@ export function ProductCard({ product, batch }: { product: Product; batch?: Batc
           </p>
           {isCanonical ? (
             <p className="num text-[10px] text-muted-foreground">
-              {hi ? "100 मी के लिए: ₹9,600, डिलीवरी सप्लायर देगा, टैक्स से पहले" : "For 100 m: ₹9,600 before tax, delivery paid by supplier"}
+              {hi ? "100 मी के लिए: ₹9,600, टैक्स से पहले" : "For 100 m: ₹9,600 before tax"}
             </p>
           ) : null}
           <p className="truncate text-[11px] text-muted-foreground">
