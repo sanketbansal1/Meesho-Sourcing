@@ -246,7 +246,7 @@ function ProductScreen() {
           {pricing ? (
             <div className="mt-2 border-t border-border pt-2">
               <Row label={t("perUnitPrice")} value={rupees(pricing.materialPaise)} />
-              <Row label={t("delivery")} value={rupees(pricing.deliveryPaise)} />
+              <Row label={t("delivery")} value={lang === "hi" ? "सप्लायर देगा" : "Paid by supplier"} />
               <Row label={t("preTaxDelivered")} value={rupees(pricing.materialPaise + pricing.deliveryPaise)} strong />
               <Row label={t("demoTax")} value={rupees(pricing.taxPaise)} tone="muted" />
               <Row label={t("totalPayable")} value={rupees(pricing.totalPaise)} strong />
