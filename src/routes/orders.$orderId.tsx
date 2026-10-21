@@ -100,6 +100,7 @@ function OrderScreen() {
           <Row label={t("qty")} value={`${order.pricing.qty} ${product.unit}`} />
           <Row label={t("purchaseRoute")} value={order.route === "batch" ? t("buyTogether") : t("buyNow")} />
           <Row label={t("perUnitPrice")} value={rupees(order.pricing.materialPaise)} />
+          <Row label={t("delivery")} value={rupees(order.pricing.deliveryPaise)} />
           <Row label={t("demoTax")} value={rupees(order.pricing.taxPaise)} tone="muted" />
           <Row label={t("totalPayable")} value={rupees(order.pricing.totalPaise)} strong />
           <Row label={t("paymentMethod")} value={order.payment === "credit" ? t("sourcingCredit") : t("payNowSim")} />
