@@ -136,7 +136,8 @@ function CheckoutScreen() {
 
         <Card>
           <Row label={t("perUnitPrice")} value={rupees(pricing.materialPaise)} />
-          <Row label={t("preTaxDelivered")} value={rupees(pricing.materialPaise)} />
+          <Row label={t("delivery")} value={rupees(pricing.deliveryPaise)} />
+          <Row label={t("preTaxDelivered")} value={rupees(pricing.materialPaise + pricing.deliveryPaise)} />
           <Row label={t("demoTax")} value={rupees(pricing.taxPaise)} tone="muted" />
           <div className="mt-1 border-t border-border pt-1">
             <Row label={t("totalPayable")} value={rupees(pricing.totalPaise)} strong />

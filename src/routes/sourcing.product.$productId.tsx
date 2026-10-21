@@ -352,14 +352,14 @@ function ProductScreen() {
           <div className="space-y-2 px-4">
             <p className="text-[11px] text-muted-foreground">
               {lang === "hi"
-                ? `समान स्पेसिफ़िकेशन, ${qty} ${product.unit}, टैक्स से पहले मटीरियल लागत।`
-                : `Same specification, ${qty} ${product.unit}, material cost before tax.`}
+                ? `समान स्पेसिफ़िकेशन, ${qty} ${product.unit}, टैक्स से पहले डिलीवरी सहित लागत।`
+                : `Same specification, ${qty} ${product.unit}, delivered cost (price + delivery) before tax.`}
             </p>
             {(() => {
               const rows = options.map((o) => {
                 const isLocal = o.id === "alt-delhi";
                 const unit = isLocal ? localPaise : o.unit;
-                return { ...o, isLocal, unit, delivered: unit * qty };
+                return { ...o, isLocal, unit, delivered: unit * qty + (isLocal ? 0 : o.delivery) };
               });
               const platform = rows.filter((r) => !r.isLocal);
               const minAll = Math.min(...rows.map((r) => r.delivered));
@@ -387,7 +387,7 @@ function ProductScreen() {
                   </div>
                   <div className="mt-1 flex flex-wrap gap-1">
                     {o.delivered === minAll ? (
-                      <Pill tone="positive">{lang === "hi" ? "सबसे कम मटीरियल लागत" : "Lowest material cost"}</Pill>
+                      <Pill tone="positive">{lang === "hi" ? "सबसे कम डिलीवर्ड लागत" : "Lowest delivered cost"}</Pill>
                     ) : null}
                     {o.lead === minLead ? (
                       <Pill tone="neutral">{lang === "hi" ? "सबसे तेज़ डिलीवरी" : "Fastest delivery"}</Pill>

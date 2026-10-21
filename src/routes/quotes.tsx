@@ -14,12 +14,12 @@ export const Route = createFileRoute("/quotes")({
       {
         name: "description",
         content:
-          "Compare quotes from material suppliers: unit price, pre-tax total, minimum quantity, lead time and quote expiry.",
+          "Compare quotes from material suppliers: unit price, delivery charge, pre-tax total, minimum quantity, lead time and quote expiry.",
       },
       { property: "og:title", content: "Quotes for your requirements — Meesho Sourcing concept" },
       {
         property: "og:description",
-        content: "Side-by-side comparison of supplier quotes on a material-price basis.",
+        content: "Side-by-side comparison of supplier quotes on delivered cost (price + delivery).",
       },
     ],
   }),
@@ -43,7 +43,7 @@ function QuotesScreen() {
 
         {reqs.map((r) => {
           const quotes = s.quotes.filter((q) => q.requirementId === r.id);
-          const delivered = quotes.map((q) => q.unitPricePaise * r.qty);
+          const delivered = quotes.map((q) => q.unitPricePaise * r.qty + q.deliveryPaise);
           const best = Math.min(...delivered);
           return (
             <div key={r.id} className="space-y-2">
@@ -110,8 +110,8 @@ function QuotesScreen() {
 
         <Note>
           {lang === "hi"
-            ? "तुलना टैक्स से पहले मटीरियल दाम पर है। सभी आँकड़े काल्पनिक डेमो डेटा हैं।"
-            : "Comparison is on material price before tax. All figures are illustrative demo data."}
+            ? "तुलना टैक्स से पहले डिलीवरी सहित लागत (दाम + डिलीवरी) पर है। सभी आँकड़े काल्पनिक डेमो डेटा हैं।"
+            : "Comparison is on delivered cost (price + delivery) before tax. All figures are illustrative demo data."}
         </Note>
       </div>
       <div className="h-6" />
