@@ -39,6 +39,10 @@ function SupplierPayments() {
                   </Pill>
                 </div>
                 <Row label={lang === "hi" ? "ऑर्डर मूल्य" : "Order value"} value={rupees(value)} strong />
+                <Row
+                  label={lang === "hi" ? "डिलीवरी (सप्लायर देगा)" : "Delivery (paid by supplier)"}
+                  value={rupees(s.batches.find((b) => b.id === po.batchId)?.deliveryPaise ?? 0)}
+                />
                 <SectionTitle>{lang === "hi" ? "भुगतान चरण" : "Payment milestones"}</SectionTitle>
                 <Row
                   label={lang === "hi" ? "ऑर्डर स्वीकृति पर 30%" : "30% on acknowledgement"}
@@ -59,7 +63,7 @@ function SupplierPayments() {
         <Note>
           {lang === "hi"
             ? "सप्लायर का भुगतान किसी छोटे सेलर की क्रेडिट वापसी पर निर्भर नहीं है। कोई प्लेटफ़ॉर्म शुल्क या सब्सक्रिप्शन नहीं दिखाया गया।"
-            : "Supplier payment does not depend on any small seller completing credit repayment. No platform fee or subscription is modelled."}
+            : "Supplier payment does not depend on any small seller completing credit repayment. Delivery on each order is paid by the material supplier and is not part of the order value. No platform fee or subscription is modelled."}
         </Note>
       </div>
       <div className="h-4" />
