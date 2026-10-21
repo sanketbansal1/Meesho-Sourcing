@@ -63,7 +63,7 @@ function SupplierPayments() {
         <Note>
           {lang === "hi"
             ? "सप्लायर का भुगतान किसी छोटे सेलर की क्रेडिट वापसी पर निर्भर नहीं है। कोई प्लेटफ़ॉर्म शुल्क या सब्सक्रिप्शन नहीं दिखाया गया।"
-            : "Supplier payment does not depend on any small seller completing credit repayment. Delivery on each order is paid by the material supplier and is not part of the order value. No platform fee or subscription is modelled."}
+            : "Supplier payment does not depend on any small seller completing credit repayment. Delivery on each order is handled by Meesho and is not part of the order value. No platform fee or subscription is modelled."}
         </Note>
       </div>
       <div className="h-4" />
