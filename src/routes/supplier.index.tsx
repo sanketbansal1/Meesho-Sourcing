@@ -119,7 +119,7 @@ function SupplierHome() {
                   strong
                 />
                 <Row
-                  label={lang === "hi" ? "डिलीवरी (सप्लायर देगा)" : "Delivery (paid by supplier)"}
+                  label={lang === "hi" ? "डिलीवरी (मीशो सँभालती)" : "Delivery (handled by Meesho)"}
                   value={rupees(s.batches.find((b) => b.id === po.batchId)?.deliveryPaise ?? 0)}
                 />
               </Card>

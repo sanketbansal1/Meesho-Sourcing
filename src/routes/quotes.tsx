@@ -110,8 +110,8 @@ function QuotesScreen() {
 
         <Note>
           {lang === "hi"
-            ? "तुलना टैक्स से पहले मटीरियल दाम पर है। डिलीवरी का खर्च मटीरियल सप्लायर उठाता है, विक्रेता नहीं। सभी आँकड़े काल्पनिक डेमो डेटा हैं।"
-            : "Comparison is on material price before tax. The delivery charge is borne by the material supplier, not the seller. All figures are illustrative demo data."}
+            ? "तुलना टैक्स से पहले मटीरियल दाम पर है। सभी आँकड़े काल्पनिक डेमो डेटा हैं।"
+            : "Comparison is on material price before tax. All figures are illustrative demo data."}
         </Note>
       </div>
       <div className="h-6" />
