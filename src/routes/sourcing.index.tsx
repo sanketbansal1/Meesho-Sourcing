@@ -70,8 +70,13 @@ function SourcingScreen() {
   const credit = s.credit;
 
   return (
-    <Screen title={t("nav_sourcing")} subtitle={t("soldByMeesho")}>
+    <Screen title={t("appName")} subtitle={`${SELLER.business} · ${SELLER.city}`}>
       <div className="space-y-3 px-4 pt-3">
+        <section className="flex items-center justify-between gap-2">
+          <h2 className="text-xl font-bold text-foreground">{t("greeting")}</h2>
+          <Pill tone="brand">{t("conceptDemo")}</Pill>
+        </section>
+
         <div className="flex items-center gap-1 text-xs text-muted-foreground">
           <MapPin className="h-3.5 w-3.5 shrink-0 text-primary" aria-hidden />
           <span className="min-w-0 truncate">
