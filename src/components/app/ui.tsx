@@ -4,6 +4,7 @@ import type { ButtonHTMLAttributes, InputHTMLAttributes, ReactNode, SelectHTMLAt
 import bagImg from "@/assets/courier-bags-grey.webp.asset.json";
 import fabricImg from "@/assets/fabric-jersey-black.webp.asset.json";
 import jewelImg from "@/assets/jewellery-components.webp.asset.json";
+import liningImg from "@/assets/fabric-lining-grey.webp.asset.json";
 import zipImg from "@/assets/zipper-black.webp.asset.json";
 import { cn } from "@/lib/utils";
 
@@ -247,6 +248,7 @@ const PHOTOS: Record<string, string> = {
   "sw-bag": bagImg.url,
   "sw-pack": bagImg.url,
   "sw-jewel": jewelImg.url,
+  "sw-lining": liningImg.url,
 };
 
 /** Honest category illustrations for SKUs without a matching photo. */
