@@ -112,7 +112,7 @@ export function BottomNav() {
       aria-label="Main"
       className="fixed bottom-0 left-1/2 z-30 w-full max-w-[420px] -translate-x-1/2 border-t border-border bg-card pb-[env(safe-area-inset-bottom)] shadow-sticky"
     >
-      <ul className="grid grid-cols-4">
+      <ul className={cn("grid", items.length === 5 ? "grid-cols-5" : "grid-cols-4")}>
         {items.map((item) => (
           <li key={item.to}>
             <Link
