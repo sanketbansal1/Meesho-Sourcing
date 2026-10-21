@@ -40,7 +40,7 @@ function SupplierPayments() {
                 </div>
                 <Row label={lang === "hi" ? "ऑर्डर मूल्य" : "Order value"} value={rupees(value)} strong />
                 <Row
-                  label={lang === "hi" ? "डिलीवरी (सप्लायर देगा)" : "Delivery (paid by supplier)"}
+                  label={lang === "hi" ? "डिलीवरी (मीशो सँभालती)" : "Delivery (handled by Meesho)"}
                   value={rupees(s.batches.find((b) => b.id === po.batchId)?.deliveryPaise ?? 0)}
                 />
                 <SectionTitle>{lang === "hi" ? "भुगतान चरण" : "Payment milestones"}</SectionTitle>
