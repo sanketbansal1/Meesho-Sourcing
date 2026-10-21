@@ -3,8 +3,7 @@ import { ChevronRight, Compass, Sparkles } from "lucide-react";
 import { Screen } from "@/components/app/Shell";
 import { MaterialTile, Pill } from "@/components/app/ui";
 import { CATEGORIES, SELLER, getProduct } from "@/lib/demo/catalog";
-import { perUnit, rupees } from "@/lib/demo/money";
-import { MARKETPLACE } from "@/lib/demo/seed";
+import { perUnit } from "@/lib/demo/money";
 import { actions } from "@/lib/demo/store";
 import { useApp } from "@/lib/useApp";
 
@@ -58,11 +57,6 @@ function HomeScreen() {
     .filter((n) => n.forRole !== "supplier" && !n.id.startsWith("ntf-seed"))
     .slice(0, 3);
 
-  const metrics = [
-    { value: String(MARKETPLACE.ordersToday), label: hi ? "आज के ऑर्डर" : "orders today" },
-    { value: String(MARKETPLACE.pendingDispatch), label: hi ? "डिस्पैच बाकी" : "to dispatch" },
-    { value: rupees(MARKETPLACE.upcomingSettlementPaise), label: hi ? "सेटलमेंट" : "settlement", to: "/payments" as const },
-  ];
 
   return (
     <Screen
@@ -75,25 +69,6 @@ function HomeScreen() {
           <div className="flex items-center justify-between gap-2">
             <h2 className="text-xl font-bold text-foreground">{t("greeting")}</h2>
             <Pill tone="brand">{t("conceptDemo")}</Pill>
-          </div>
-          <div className="grid grid-cols-3 divide-x divide-border rounded-xl bg-card py-3">
-            {metrics.map((m) => {
-              const inner = (
-                <>
-                  <span className="num block text-base font-bold text-foreground">{m.value}</span>
-                  <span className="block text-xs text-muted-foreground">{m.label}</span>
-                </>
-              );
-              return m.to ? (
-                <Link key={m.label} to={m.to} className="px-2 text-center">
-                  {inner}
-                </Link>
-              ) : (
-                <div key={m.label} className="px-2 text-center">
-                  {inner}
-                </div>
-              );
-            })}
           </div>
         </section>
 
