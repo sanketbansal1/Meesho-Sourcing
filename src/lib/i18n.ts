@@ -86,6 +86,7 @@ const D: Dict = {
   deliverTo: ["Deliver to", "डिलीवरी यहाँ"],
   searchPlaceholder: ["Search material or specification", "मटीरियल या स्पेसिफिकेशन खोजें"],
   tellUsWhatYouNeed: ["Tell us what you need", "बताइए आपको क्या चाहिए"],
+  describeWhatYouNeed: ["Describe what you need", "बताइए आपको क्या चाहिए"],
   tellUsSub: ["Type or use a sample voice request", "टाइप करें या सैंपल वॉइस रिक्वेस्ट लें"],
   openBatches: ["Open batches you can join", "खुले बैच जिनमें जुड़ सकते हैं"],
   buyNowMaterials: ["Buy now materials", "अभी खरीदने वाले मटीरियल"],

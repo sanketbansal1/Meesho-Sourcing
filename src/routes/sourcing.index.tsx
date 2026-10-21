@@ -123,7 +123,7 @@ function SourcingScreen() {
         >
           <Mic className="h-5 w-5 shrink-0 text-primary" aria-hidden />
           <span className="min-w-0">
-            <span className="block text-sm font-bold text-primary">{t("tellUsWhatYouNeed")}</span>
+            <span className="block text-sm font-bold text-primary">{t("describeWhatYouNeed")}</span>
             <span className="block text-[11px] text-primary/80">{t("tellUsSub")}</span>
           </span>
         </button>
