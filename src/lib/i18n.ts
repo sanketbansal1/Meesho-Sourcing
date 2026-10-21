@@ -46,7 +46,6 @@ const D: Dict = {
   // home
   greeting: ["Namaste, Aarav", "नमस्ते, आरव"],
   businessLine: ["Aarav Apparel · Delhi", "आरव अपैरल · दिल्ली"],
-  marketplaceToday: ["Customer orders today", "आज के ग्राहक ऑर्डर"],
   pendingDispatch: ["Pending dispatch", "भेजना बाकी"],
   upcomingSettlement: ["Upcoming settlement", "आने वाला सेटलमेंट"],
   sourceMaterials: ["Source materials", "मटीरियल खरीदें"],
@@ -194,9 +193,6 @@ const D: Dict = {
   estimatedArrival: ["Estimated arrival", "अनुमानित पहुँच"],
 
   // orders
-  customerOrders: ["Customer orders", "ग्राहक ऑर्डर"],
-  sourcingOrders: ["Sourcing orders", "सोर्सिंग ऑर्डर"],
-  customerOrdersNote: ["Finished goods sold by your business", "आपके व्यवसाय द्वारा बेचा गया तैयार सामान"],
   sourcingOrdersNote: ["Raw materials your business buys", "आपके व्यवसाय द्वारा खरीदा गया कच्चा माल"],
   stage_awaiting_batch: ["Awaiting batch confirmation", "बैच पक्का होने का इंतज़ार"],
   stage_confirmed: ["Confirmed", "पक्का हुआ"],
