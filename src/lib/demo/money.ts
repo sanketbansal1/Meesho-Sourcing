@@ -30,7 +30,7 @@ export function priceQuote(quote: RouteQuote, qty: number): Pricing | null {
   if (!Number.isFinite(qty) || qty <= 0) return null;
   if (qty < quote.minQty || qty > quote.maxQty) return null;
   const materialPaise = roundPaise(quote.unitPricePaise * qty);
-  // Delivery is paid by the material supplier, never by the seller.
+  // Delivery is handled by Meesho, never charged to the seller.
   const deliveryPaise = 0;
   const preTax = materialPaise + deliveryPaise;
   const taxPaise = roundPaise(preTax * DEMO_TAX_RATE);

@@ -44,7 +44,7 @@ const BLOCKS: { en: [string, string[]]; hi: [string, string[]] }[] = [
       "Seller benefits",
       [
         "Reach material suppliers beyond the local market.",
-        "Delivery is paid by the material supplier — sellers pay only the material price.",
+        "Delivery is handled by Meesho — sellers pay only the material price.",
         "Buy a small share inside a larger combined order.",
         "Optional approved procurement credit, repaid from sales settlements.",
       ],
