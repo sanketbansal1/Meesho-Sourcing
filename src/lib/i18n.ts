@@ -46,7 +46,6 @@ const D: Dict = {
   // home
   greeting: ["Namaste, Aarav", "नमस्ते, आरव"],
   businessLine: ["Aarav Apparel · Delhi", "आरव अपैरल · दिल्ली"],
-  marketplaceToday: ["Customer orders today", "आज के ग्राहक ऑर्डर"],
   pendingDispatch: ["Pending dispatch", "भेजना बाकी"],
   upcomingSettlement: ["Upcoming settlement", "आने वाला सेटलमेंट"],
   sourceMaterials: ["Source materials", "मटीरियल खरीदें"],
