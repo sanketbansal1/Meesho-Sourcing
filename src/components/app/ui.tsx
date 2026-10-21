@@ -97,10 +97,10 @@ export function Row({
 }) {
   return (
     <div className="flex items-start justify-between gap-3 py-1.5 text-sm">
-      <span className="min-w-0 text-muted-foreground">{label}</span>
+      <span className="min-w-0 shrink-0 text-muted-foreground">{label}</span>
       <span
         className={cn(
-          "num shrink-0 text-right",
+          "num min-w-0 text-right [overflow-wrap:anywhere]",
           strong ? "font-bold text-foreground" : "font-medium text-foreground",
           tone === "positive" && "text-positive",
           tone === "muted" && "text-muted-foreground",
