@@ -27,12 +27,12 @@ export const Route = createFileRoute("/sourcing/product/$productId")({
       {
         name: "description",
         content:
-          "Full specifications, delivered quote, batch progress and supplier comparison for a raw material in the concept prototype.",
+          "Full specifications, price breakdown, batch progress and supplier comparison for a raw material in the concept prototype.",
       },
       { property: "og:title", content: "Material details — Meesho Sourcing concept" },
       {
         property: "og:description",
-        content: "Compare delivered options and join a pooled buying batch.",
+        content: "Compare options and join a pooled buying batch.",
       },
     ],
   }),

@@ -20,7 +20,7 @@ export const Route = createFileRoute("/checkout/$productId")({
       {
         name: "description",
         content:
-          "Simulated checkout for raw materials: delivered price breakdown, demo tax, pay now or approved sourcing credit.",
+          "Simulated checkout for raw materials: price breakdown, demo tax, pay now or approved sourcing credit.",
       },
       { property: "og:title", content: "Checkout — Meesho Sourcing concept" },
       { property: "og:description", content: "Pay now or use simulated sourcing credit in the concept prototype." },
