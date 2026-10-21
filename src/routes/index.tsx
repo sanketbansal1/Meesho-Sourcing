@@ -77,7 +77,7 @@ function HomeScreen() {
           <div className="min-w-0">
             <p className="text-[11px] font-bold tracking-wider text-primary">MEESHO SOURCING</p>
             <h2 className="mt-1 text-lg font-bold leading-tight text-foreground">
-              {hi ? "कच्चा माल। ज़्यादा संभावनाएँ।" : "Raw materials. More possibilities."}
+              {hi ? "बेहतर खरीद। आसां बिक्री।" : "Better sourcing. Easier Selling"}
             </h2>
             <p className="mt-1 text-sm text-foreground/75">
               {hi ? "अलग-अलग क्षेत्रों के सप्लायर खोजें और साथ मिलकर खरीदें।" : "Find suppliers across regions and buy together."}
