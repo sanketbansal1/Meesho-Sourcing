@@ -5,8 +5,6 @@ import { BatchRow, ProductCard } from "@/components/app/ProductCard";
 import { Screen } from "@/components/app/Shell";
 import { Button, Card, Empty, Field, Input, MaterialTile, Pill, SectionTitle, Select, Sheet } from "@/components/app/ui";
 import { CATEGORIES, PRODUCTS, SELLER, SUPPLIERS, getProduct } from "@/lib/demo/catalog";
-import { rupees } from "@/lib/demo/money";
-import { availableCredit } from "@/lib/demo/store";
 import { useApp } from "@/lib/useApp";
 
 export const Route = createFileRoute("/sourcing/")({
@@ -67,7 +65,6 @@ function SourcingScreen() {
 
   const activeFilters = [category, origin, maxPrice, avail].filter(Boolean).length;
   const recent = s.orders.slice(0, 3).map((o) => getProduct(o.productId)!).filter(Boolean);
-  const credit = s.credit;
 
   return (
     <Screen title={t("appName")} subtitle={`${SELLER.business} · ${SELLER.city}`}>
@@ -139,19 +136,6 @@ function SourcingScreen() {
             </Card>
           </Link>
         ) : null}
-
-        <Link to="/payments">
-          <Card className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
-            <div className="min-w-0">
-              <p className="text-xs font-semibold text-foreground">{t("sourcingCredit")}</p>
-              <p className="num text-[11px] text-muted-foreground">
-                {t("available")} {rupees(availableCredit(s))} · {t("outstanding")}{" "}
-                {rupees(credit.outstandingPaise)}
-              </p>
-            </div>
-            <Pill tone="brand">{t("details")}</Pill>
-          </Card>
-        </Link>
       </div>
 
       {q || activeFilters ? (
