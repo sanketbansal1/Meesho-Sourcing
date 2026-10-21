@@ -118,6 +118,10 @@ function SupplierHome() {
                   value={rupees(po.totalQty * po.unitPricePaise)}
                   strong
                 />
+                <Row
+                  label={lang === "hi" ? "डिलीवरी (सप्लायर देगा)" : "Delivery (paid by supplier)"}
+                  value={rupees(s.batches.find((b) => b.id === po.batchId)?.deliveryPaise ?? 0)}
+                />
               </Card>
             </Link>
           ))
