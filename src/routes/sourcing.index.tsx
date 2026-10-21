@@ -12,13 +12,13 @@ import { useApp } from "@/lib/useApp";
 export const Route = createFileRoute("/sourcing/")({
   head: () => ({
     meta: [
-      { title: "Source raw materials — Meesho Sourcing concept" },
+      { title: "Meesho Sourcing — seller home (concept)" },
       {
         name: "description",
         content:
           "Search fabrics, trims, packaging and jewellery components, compare material prices and join open buying batches.",
       },
-      { property: "og:title", content: "Source raw materials — Meesho Sourcing concept" },
+      { property: "og:title", content: "Meesho Sourcing — seller home (concept)" },
       {
         property: "og:description",
         content: "Browse materials by category, filter by material price and origin, and join pooled batches.",
