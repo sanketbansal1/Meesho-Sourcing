@@ -5,7 +5,6 @@ import {
   CreditCard,
   Home,
   Inbox,
-  Layers,
   type LucideIcon,
   User,
   Wand2,
@@ -45,8 +44,7 @@ function useNav(): NavItem[] {
     ];
   }
   return [
-    { to: "/", icon: Home, label: t("nav_home") },
-    { to: "/sourcing", icon: Layers, label: t("nav_sourcing") },
+    { to: "/sourcing", icon: Home, label: t("nav_home") },
     { to: "/orders", icon: ClipboardList, label: t("nav_orders") },
     { to: "/payments", icon: CreditCard, label: t("nav_payments") },
     { to: "/account", icon: User, label: t("nav_account") },
@@ -114,12 +112,12 @@ export function BottomNav() {
       aria-label="Main"
       className="fixed bottom-0 left-1/2 z-30 w-full max-w-[420px] -translate-x-1/2 border-t border-border bg-card pb-[env(safe-area-inset-bottom)] shadow-sticky"
     >
-      <ul className="grid grid-cols-5">
+      <ul className="grid grid-cols-4">
         {items.map((item) => (
           <li key={item.to}>
             <Link
               to={item.to}
-              activeOptions={{ exact: item.to === "/" || item.to === "/supplier" }}
+              activeOptions={{ exact: item.to === "/supplier" }}
               className="tap flex flex-col items-center justify-center gap-0.5 py-1.5 text-[10px] font-medium text-muted-foreground"
               activeProps={{ className: "text-primary" }}
             >
